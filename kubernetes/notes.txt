@@ -1,0 +1,7 @@
+I want to learn about kubernetes. Document here when I get to it
+
+https://kubernetes.io/
+
+Control plane UI
+https://argo-cd.readthedocs.io/en/stable/
+

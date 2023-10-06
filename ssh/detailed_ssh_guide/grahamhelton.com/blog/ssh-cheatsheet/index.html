@@ -1,0 +1,219 @@
+<!DOCTYPE html>  
+<html lang="">  
+    <title>
+
+  An Excruciatingly Detailed Guide To SSH (But Only The Things I Actually Find Useful) 
+
+</title><link rel="stylesheet" href="../../css/style.css" type="text/css" media="all" />  
+
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="An Excruciatingly Detailed Guide To SSH (But Only The Things I Actually Find Useful)  &middot; Graham Helton">
+<meta property="og:description" content="Welcome We&amp;amp;rsquo;ve all seen these great diagrams of how SSH port forwarding works but if your brain is anything like mine, these diagrams leave you with a lot of unanswered questions. If you&amp;amp;rsquo;re on a red team, understanding how to traverse a network better than the people who designed it gives you immense power to do evil things. SSH is such a powerful tool but sometimes the syntax and other concepts can get in the way of us accomplishing our goals.">
+<meta property="og:url" content="https://grahamhelton.com/blog/ssh-cheatsheet/">
+<meta property="og:site_name" content="Graham Helton">
+<meta property="og:image" content="https://grahamhelton.com/ssh-cheatsheet-cover.png">
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-211014781-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+
+<meta property="article:published_time" content="2023-08-22T00:00:00Z">
+
+<body>
+<main>  
+<section class="section">  
+  <article>  
+    <div class="blog__container">  
+          <h1 class="blog__title">An Excruciatingly Detailed Guide To SSH (But Only The Things I Actually Find Useful) </h1>  
+
+          <p> Oh you like SSH? Name every flag. </p>
+          <p>Published: August 22, 2023</p>
+          <p>Reading Time: 15  minutes <p>
+
+            <div class="blog__details">  
+              <div class="blog__info">  
+              </div>  
+            </div>  
+          <div class="content">  
+            <h1 id="welcome">Welcome</h1>
+<p>We&rsquo;ve all seen <a href="https://iximiuz.com/ssh-tunnels/ssh-tunnels.png">these great diagrams</a> of how SSH port forwarding works but if your brain is anything like mine, these diagrams leave you with a lot of unanswered questions. If you&rsquo;re on a red team, understanding how to traverse a network better than the people who designed it gives you immense power to do evil things. SSH is such a powerful tool but sometimes the syntax and other concepts can get in the way of us accomplishing our goals. In an effort to do more evil things in a timely fashion I&rsquo;ve put together a massive list of SSH <em>things</em> that I find useful. You can read it too, but if I&rsquo;m being honest, this is mostly for me. I&rsquo;ve learned that I really don&rsquo;t grasp concepts unless I have hands on keyboard time doing them. This post is essentially just everything I learned while doing so. Also I should point out that in all of these examples I am using a websever to demonstrate port forwarding but this can be done with almost any service including RDP, SQL, etc.</p>
+<h2 id="local-port-forwarding--l">Local Port Forwarding (-L)</h2>
+<p>Like the name implies, local port forwarding allows you to create a local port that is forwarded to a remote port. Let&rsquo;s assume that the server <code>internal-web.int</code> is hosting a webpage that is only accessible on the loopback interface. This means that in order for us to access that webpage, we must be on <code>internal-web.int</code>. One way that we can get around this is by using an SSH local port forward. Assuming we SSH access to <code>internal-web.int</code>, on the host machine <code>campfire.int</code>, we can create a local forward that will allow us to access the remote webserver via a local port.</p>
+<p>The command to do this is: <code>ssh -N -f -L 1337:127.0.0.1:80 root@internal-web.int</code>. This command is ran on <code>campfire.int</code>. That&rsquo;s a complicated command, as always, breaking it down by flag will allow us to figure out what exactly is happening.</p>
+<ul>
+<li><code>-N</code>: This lets SSH know that we&rsquo;re not going to be sending any commands after the server. Without this we&rsquo;d get a shell on <code>root@internal-web.int</code></li>
+<li><code>-f</code>: This sends SSH to the background. If we didn&rsquo;t do this, our terminal would hang and we wouldn&rsquo;t be able to use it.</li>
+<li><code>-L</code> Tells SSH to forward a local port</li>
+<li><code>1337:127.0.0.1:80</code>: This tells SSH to bind the local port 1337 to the remote port of 80 (the port our webserver is on).</li>
+</ul>
+<blockquote>
+<p>The best way I found to remember this is <code>-L</code>  means local is on the left-hand side of the address. <code>-R</code> means the local port is on the right-hand side of the address.</p>
+</blockquote>
+<ul>
+<li><code>root@internal-web.int</code> This is telling SSH that we wish to login to the remote server as the root user to establish the SSH tunnel. Remember, port 1337 on our local machine is going to be bound to port 80 on the remote server.</li>
+</ul>
+<p>Now that we have established the local port forward, we can interact with port 80 on <code>internal-web.int</code> by sending requests to port 1337 on our local machine( <code>campfire.int</code>).</p>
+<p><img src="../../Pasted-image-20230820003129.png" alt=""></p>
+<h1 id="remote-port-forwarding--r">Remote Port Forwarding (-R)</h1>
+<p>Remote port forwarding is the opposite of local port forwarding.
+Lets assume that we have access to <code>internal-web.int</code> and it is hosting a webpage that is only accessible on the loopback interface. Lets also assume that <code>campfire.int</code> cannot directly access <code>internal-web.int</code>. In this scenario we&rsquo;d like to access <code>internal-web.int</code> from <code>campfire.int</code>. The problem is that we cannot directly communicate between <code>campfire.int</code> and <code>internal-web.int</code> due to a firewall. To get around this, we identify that <code>vuln-server.int</code> is reachable by both <code>campfire.int</code> and <code>internal-web.int</code>. The solution in this case is to use remote port forwarding SSH option to forward the port 80 from <code>internal-web.int</code>  to an arbitrary port on <code>vuln-server.int</code>. Once we complete the remote port forward, we should be able to access the <code>internal-web.int</code>&rsquo;s internal web page running on port 80 by issuing a curl command to <code>vuln-server.int</code>.</p>
+<p>The command to do this is: <code>ssh -N -f -R 3000:127.0.0.1:80 root@vuln-server.int</code>.</p>
+<ul>
+<li><code>-N</code>: This lets SSH know that we&rsquo;re not going to be sending any commands after the server. Without this we&rsquo;d get a shell on <code>root@internal-web.int</code></li>
+<li><code>-f</code>: This sends SSH to the background. If we didn&rsquo;t do this, our terminal would hang and we wouldn&rsquo;t be able to use it.</li>
+<li><code>-R</code> Tells SSH to forward a remote port</li>
+<li><code>3000:127.0.0.1:80</code>: This tells SSH to bind the remote port 3000 to the local port of 80.</li>
+</ul>
+<blockquote>
+<p>The best way I found to remember this is local forwarding with<code>-L</code>  means local is on the left-hand side of the address. Remote forwarding with<code>-R</code> means the local port is on the right-hand side of the address.</p>
+</blockquote>
+<ul>
+<li><code>root@vuln-server.int</code>: This is telling SSH that we wish to login to the remote server as the root user to establish the SSH tunnel. Remember, port 3000 (on <code>vuln-server.int</code>) is going to be bound to port 80 on this server.</li>
+</ul>
+<p>Now that we have established the remote port forward, we can access port 80 on <code>internal-web.int</code> by sending a curl request to <code>vuln-server.int:3000</code></p>
+<p><img src="../../Pasted-image-20230820010425.png" alt=""></p>
+<h1 id="dynamic-port-forwarding--d">Dynamic Port Forwarding (-D)</h1>
+<p>Dynamic port forwarding with the <code>-D</code> option is an interesting option for proxying traffic over a SOCKS proxy. Lets assume that <code>internal-web.int</code> is hosting a web application that is only accessible on the internal network. We will assume that we have SSH access to <code>vuln-server.int</code>  and it is on the same internal network and able to reach <code>internal-web.int</code>. What we would like to accomplish is accessing the webserver running on <code>internal-web.int</code> by proxying all of our traffic from <code>campfire.int</code> through <code>vuln-server.int</code> using both proxychains and our local web browser. First, we must ensure the <code>/etc/proxychains.conf</code> configuration file is set correctly.</p>
+<ul>
+<li><code>Socks5</code>: Tells proxychains to use socks5 (instead of socks4)</li>
+<li><code>127.0.0.1</code>: Tells proxychains to use our localhost</li>
+<li><code>8080</code>: Is the port we will use for our dynamic forward. This must match the port you specify with <code>-D</code> in your SSH command.
+<img src="../../Pasted-image-20230822204719.png" alt=""></li>
+</ul>
+<p>The command to do this is <code>ssh -N -f -D 8080 root@vuln-server.int</code></p>
+<ul>
+<li><code>-N</code>: This lets SSH know that we&rsquo;re not going to be sending any commands after the server. Without this we&rsquo;d get a shell on <code>root@vuln-server.int</code></li>
+<li><code>-f</code>: This sends SSH to the background. If we didn&rsquo;t do this, our terminal would hang and we wouldn&rsquo;t be able to use it.</li>
+<li><code>-D 8080</code> Tells SSH to create a dynamic local port to send our traffic through.</li>
+<li><code>root@vuln-server.int</code>: This is telling SSH that we wish to login to the remote server as the root user to establish the SSH tunnel so that we can proxy our traffic through it.</li>
+</ul>
+<p>After creating the dynamic port forward over port 8080 and setting <code>socks5 127.0.0.1 8080</code> in <code>/etc/proxychains.conf</code>, we can now run <code>proxychains curl 192.168.1.185</code> and see our webpage hosted on 192.168.1.185. Additionally, DNS over SOCKS is hit or miss for me which is why I&rsquo;ve used the IP address in the below curl command.</p>
+<p><img src="../../Pasted-image-20230820222328.png" alt=""></p>
+<p>Next, we can configure Firefox to browse the internal web server via our SOCKS proxy by configuring the proxy settings within firefox itself. To get to the settings in firefox go to: Settings -&gt; Privacy &amp; Security -&gt; Network Settings. Once there select Manual proxy configuration and check the &ldquo;Proxy DNS when using SOCKS V5&rdquo;. Finally, tell firefox about the SOCKS proxy we just set up by setting SOCKS host to 127.0.0.1 and the port to 8080 (Or whatever you set your port to in your SSH command).</p>
+<p><img src="../../Pasted-image-20230820012652.png" alt="">
+Now that we&rsquo;ve set up our proxy, we can now access the webpage on <code>internal-web.int</code> since all of our traffic is being proxied from our local machine through <code>vuln-server.int</code>. Pretty cool.
+<img src="../../Pasted-image-20230820012725.png" alt=""></p>
+<h1 id="jumphosts--j">Jumphosts (-J)</h1>
+<p>Compared to the previous commands, jumping through hosts with SSH is fairly straight forward. In this scenario we will proxy our traffic through two hosts to reach a destination host that is not reachable by our current host <code>campfire.int</code>.  Our jump chain will look like this: <code>campfire.int</code> -&gt; <code>vuln-server.int</code> -&gt; <code>internal-web.int</code> -&gt; <code>dns.int</code>.</p>
+<p>The command to do this is <code>ssh -J root@vuln-server.int,root@internal-web.int root@dns.int</code>. Note that multiple jumps are separated by commas.
+<img src="../../Pasted-image-20230822205116.png" alt=""></p>
+<h1 id="agent-forwarding--a">Agent Forwarding (-A)</h1>
+<p>SSH Agent forwarding is an interesting concept that I&rsquo;ve written about about in my post <a href="https://grahamhelton.com/blog/ssh_agent/">Zero Effort Private Key Compromise: Abusing SSH-Agent for Lateral Movement</a> which I encourage you to read if you&rsquo;re considering using agent forwarding. To summarize that post,  The SSH agent allows you to add private keys/identities to the agent running on your local machine using <code>ssh-add &lt;private_key_file&gt;</code>. These keys can then be listed with <code>ssh-add -l</code>. After adding a key to the ssh-agent utility, you can then SSH to a server using the key without having to re-enter the password. This is useful for both humans and service accounts. The <code>-A</code> option allows you to forward your key agent to the machine you’re connecting to, allowing you to use your private keys from the machine you’re connected to. Again, if you want more information about this, check out my previous post on the topic as there are some security concerns with this.</p>
+<p>To demonstrate this, lets assume we want to jump through <code>vuln-server.int</code> into <code>internal-web.int</code> while also forwarding the keys in our ssh-agent so that we can utilize them once on <code>internal-web.int</code>.</p>
+<p>The command to do this is: <code>ssh -A -J root@vuln-server.int root@internal-web.int</code></p>
+<ul>
+<li><code>-A</code> Tells SSH to forward the keys in our SSH agent to the remote machine <code>internal-web.int</code></li>
+<li><code>-J root@vuln-server.int</code> Tells SSH to proxy our traffic through <code>vuln-server.int</code> before accessing <code>internal-web.int</code></li>
+<li><code>root@internal-web.int</code>: This is telling SSH that we wish to login to the remote server as the root user to establish the SSH tunnel.</li>
+</ul>
+<p>As you can see, after executing <code>ssh -A -J root@vuln-server.int root@internal-web.int</code>, we can use <code>ssh root@dns.int</code> without having to specify a private key or enter any credentials. This is because our local machine <code>campfire.int</code> has the ssh key for <code>dns.int</code> loaded into the ssh-agent. We confirm this by running <code>ssh-agent -l</code>.</p>
+<p><img src="../../Pasted-image-20230820220930.png" alt=""></p>
+<h1 id="tty-command-allocation--t">TTY Command Allocation (-t)</h1>
+<p>This option is super simple but very helpful for quickly running commands on a remote server that require some sort of interaction such as <code>Vim</code> or <code>top</code>. My favorite use case for this is when I need to quickly edit a file on a remote server. All you need to do is run the command <code>ssh root@internal-web.int -t top</code> and you will be greeted with a TTY containing the <code>top</code> command.</p>
+<p><img src="../../Pasted-image-20230820223227.png" alt=""></p>
+<h1 id="global-port--g">Global port (-g)</h1>
+<p>This one is a bit less common, but it allows us to define a locally forwarded port as a &ldquo;global port&rdquo; (my terminology, not official) that will allow us to proxy and traffic coming in on a local port to a port on an external server. This is similar to the <code>-L</code> option mentioned previously, but it will allow us to access the &ldquo;Local&rdquo; ports from an external machine. In the scenario below we have shell access to <code>vuln-server.int</code> and we would like to proxy any connection hitting port 2222 to port 22 on <code>internal-web.int</code>.</p>
+<p>The command to do this is: <code>ssh -N -f -g -L 2222:localhost:22 root@internal-web.int</code></p>
+<ul>
+<li><code>-N</code>: This lets SSH know that we&rsquo;re not going to be sending any commands after the server. Without this we&rsquo;d get a shell on <code>root@internal-web.int</code></li>
+<li><code>-f</code>: This sends SSH to the background. If we didn&rsquo;t do this, our terminal would hang and we wouldn&rsquo;t be able to use it.</li>
+<li><code>-g</code> This tells SSH to allow remote hosts to connect to locally forwarded ports</li>
+<li><code>-L</code> Tells SSH to forward a local port</li>
+</ul>
+<p>As you can see, even though our initial SSH command was to port 2222 on <code>vuln-server.int</code>, our shell tells us that we are actually on <code>internal-web.int</code> because of the <code>ssh -N -f -g -L 2222:localhost:22 root@internal-web.int</code></p>
+<p><img src="../../Pasted-image-20230820225237.png" alt=""></p>
+<h1 id="ssh-console-">SSH Console (~?)</h1>
+<p>The SSH console is a &ldquo;hidden&rdquo; feature of SSH that allows you to exert some control over SSH without having to interact with the remote system. This is useful if you&rsquo;re trying to control SSH itself but your shell is broken. To access the help menu for the console press <code>~?</code>. If you&rsquo;re familiar with vim, this is similar to using the leader character.  This will bring up the help console. There are two options that I find very useful. First is the <code>~.</code> option which will kill your session (very useful if you&rsquo;ve broken something).
+<img src="../../Pasted-image-20230821171158.png" alt=""></p>
+<p>The second is the &ldquo;Console&rdquo; option which can be accessed with  <code>~C</code>. This console has a few options for forwarding. If you find that you&rsquo;ve SSH&rsquo;d into a server and would like to begin using this session as  a port forward session (such as a dynamic forward with the <code>-D</code> option mentioned previously), you can forward this session with the <code>-D 8080</code> option to create a forward-on-the-fly out of this session. In this example, I&rsquo;ve connected to <code>vuln-server.int</code> via a normal <code>ssh</code> command. After pressing <code>~C</code> and typing <code>-D 8080</code> and pressing enter twice, a normal prompt is returned to me. However, upon utilizing proxychains on the host machine <code>campfire.int</code> (and ensuring the <code>/etc/proxychains.conf</code> file is set to use port <code>8080</code>), we can utilize the SSH session as if we had initiated it using <code>ssh -D</code>. Nifty.</p>
+<p><img src="../../Pasted-image-20230821231653.png" alt=""></p>
+<h1 id="ssh-config">SSH Config</h1>
+<p>The SSH config file is located at <code>~/.ssh/config</code>  and can be utilized to save you time when making connections over SSH. The config file uses a very easy to follow syntax that allows you to save your SSH configuration instead of having to type out all the options you want in the command line each time. SSH will parse this file when making an SSH connection. If the server you&rsquo;re connecting to has an configuration defined in <code>~/.ssh/config</code>, it will use that configuration. Note that command line parameters take precedence over the configuration file. This means that if your <code>~/.ssh/config</code> file says that the user for <code>internal-web.int</code> should be <code>root</code>, but you run the SSH command <code>ssh graham@internal-web.int</code>, SSH will attempt to log you in as <code>graham</code>, not <code>root</code>.  Below is an example of a very basic <code>~/.ssh/config</code> file.</p>
+<div class="highlight"><pre tabindex="0" style="color:#ebdbb2;background-color:#282828;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#756d59">1</span><span><span style="color:#928374;font-style:italic"># You can put comments with a `#` at the beginning of the line only. </span>
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#756d59">2</span><span>host internal-web.int
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#756d59">3</span><span>    User root
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#756d59">4</span><span>    IdentityFile /home/smores/ssh_agent/internal-web-no-pw
+</span></span><span style="display:flex;"><span style="white-space:pre;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#756d59">5</span><span>	Port <span style="color:#d3869b">2222</span>
+</span></span></code></pre></div><p>The way SSH parses this file when running <code>ssh internal-web.int</code> is:</p>
+<ol>
+<li>It attempts to match <code>internal-web.int</code>  in the command line invocation with a <code>host</code> keyword matching <code>internal-web.int</code>  in <code>~/.ssh/config</code></li>
+<li>If <code>internal-web.int</code> is found in <code>~/.ssh/config</code>, any of the options under host will be utilized if they&rsquo;re not specified in the command line invocation</li>
+<li>If no match is found, SSH will only use options you&rsquo;ve defined in your command line invocation of SSH.</li>
+</ol>
+<h2 id="ssh-config-keywords">SSH Config Keywords</h2>
+<p>There are <a href="https://www.ssh.com/academy/ssh/config">many keywords</a> you can utilize in your SSH config file but here are a few of the common ones I use that aren&rsquo;t self explanatory (such as <code>Port</code> and <code>User</code>) .</p>
+<ul>
+<li>
+<p><code>IdentityFile /path/to/private_key</code>:  Allows you to specify the private key you wish to use for the host.  Same as using <code>-i</code>
+<img src="../../Pasted-image-20230821213028.png" alt=""></p>
+</li>
+<li>
+<p><code>ForwardAgent</code>: This is the same as running <code>ssh -A</code> (Once again, please see  <a href="https://grahamhelton.com/blog/ssh_agent/">Zero Effort Private Key Compromise: Abusing SSH-Agent for Lateral Movement</a>  before using this.)
+<img src="../../Pasted-image-20230821172533.png" alt=""></p>
+</li>
+<li>
+<p><code>ProxyJump root@internal-web.int</code>: Specify a server to proxy traffic through. Same as the <code>-J</code> option mentioned above. Note that in the below example we are asked to authenticate to <code>root@vuln-server.int</code>. This demonstrates that our traffic is indeed being routed through <code>vuln-server.int</code> before giving us a shell on <code>internal-web.int</code> like we asked for in the SSH command.
+<img src="../../Pasted-image-20230821213441.png" alt=""></p>
+</li>
+<li>
+<p><code>Match</code>: This one is a bit more complex. The <code>Match</code> keyword allows you to define conditions in your SSH config. In the below example,  SSH executes the command <code>export | grep PROXYME=TRUE</code>. If the program returns with a status code of <code>0</code> (in this case, meaning grep found a match), it will utilize the SSH  keywords defined under the <code>Match</code> block (In this case, <code>ProxyJump</code>). Otherwise only the normal <code>host internal-web.int</code> block is used.</p>
+<p>In the below example, we first run <code>ssh internal-web.int</code> which successfully connects us to the server using the private key denoted with the <code>IdentityFile</code> keyword. Since <code>export | grep PROXYME=TRUE</code> returns with a status code of <code>1</code> (meaning grep did not find a match), we do not execute the <code>ProxyJump</code> keyword under the match statement.</p>
+<p>Next, we set the <code>PROXYME</code>  environment variable to <code>TRUE</code>  using <code>export PROXYME=TRUE</code> and re-run the same <code>ssh internal-web.int</code>. This time we are asked to authenticate to <code>vuln-server.int</code> before we get a shell on <code>internal-web.int</code>. This is because SSH evaluated the <code>Match</code> block and executed <code>export | grep PROXYME=TRUE</code> which returned status code <code>0</code> (meaning grep found the match). Since it returned true, it executed the <code>ProxyJump</code> keyword defined under the <code>Match</code> block.</p>
+</li>
+<li>
+<p><img src="../../Pasted-image-20230821214524.png" alt=""></p>
+</li>
+</ul>
+<p>I should also point out that <code>scp</code> (and some other SSH based utilities) can use your SSH config file! Typically it does this by default, but I&rsquo;ve had instances where it does not. If you&rsquo;re on a system where <code>scp</code> does not automatically utilize your <code>~/.ssh/config</code> file, you can explicitly define it with the <code>-F ~/.ssh/config</code> argument.</p>
+<p><img src="../../Pasted-image-20230822214438.png" alt=""></p>
+<h1 id="ssh-copy-id">ssh-copy-id</h1>
+<p>The ssh-copy-id utility is a small tool that allows us to quickly upload our public key to a server.</p>
+<p>The command to do this is: <code>ssh-copy-id -i internal-web root@internal-web.int</code></p>
+<ul>
+<li><code>-i internal-web</code>: Specify the name of the private key we wish to use to authenticate and copy to the server.</li>
+<li><code>root@internal-web.int</code> Specify the server we wish to upload the private key to.</li>
+</ul>
+<p><img src="../../Pasted-image-20230821212039.png" alt=""></p>
+<h1 id="ssh-keygen">ssh-keygen</h1>
+<p>This utility is used to generate private/public key pairs. It is typically recommended that you specify a larger key size using the <code>-b</code>  option. Although I&rsquo;m not a crypto expert, longer is generally better and the default keysize is 3072 (At least on my machine). <code>ssh-keygen</code> defaults to RSA, however, other (preferably stronger) algorithms can be used by specifying the <code>-t</code> flag. IE <code>ssh-keygen -t ecdsa -b 521</code> Additionally, you can inspect keys to see their fingerprint and byte size using <code>ssh-keygen -lf &lt;file-name&gt;</code>.
+<img src="../../Pasted-image-20230821234857.png" alt=""></p>
+<h1 id="wrapping-up">Wrapping up</h1>
+<p>So there you have it, my personal SSH cheatsheet for SSH. Go forth and SSH into machines like you know what you&rsquo;re doing.  If you have any questions, feel free to let me <a href="https://grahamhelton.com/pages/links/">know on any of these sites</a> or shoot me an email via <code>blog[AT]grahamhelton.com</code>.</p>
+<h1 id="references">References</h1>
+<p><a href="https://github.com/cwolff411/redteamvillage-sshtunnels">https://github.com/cwolff411/redteamvillage-sshtunnels</a>
+<a href="https://www.ssh.com/academy/ssh/tunneling-example">https://www.ssh.com/academy/ssh/tunneling-example</a>
+<a href="https://goteleport.com/blog/ssh-tunneling-explained/">https://goteleport.com/blog/ssh-tunneling-explained/</a>
+<a href="https://linuxize.com/post/how-to-setup-ssh-tunneling/">https://linuxize.com/post/how-to-setup-ssh-tunneling/</a>
+<a href="https://iximiuz.com/en/posts/ssh-tunnels/">https://iximiuz.com/en/posts/ssh-tunnels/</a></p>
+  
+          </div>  
+        </div>  
+
+  </article>  
+
+
+  
+        </main>
+
+<footer>
+  <div class="footer_class">
+    <p>
+    <a href="https://grahamhelton.com/links" title="Reach out to me">Have Questions? Reach out to me.</a>
+    </p>
+
+  </div>
+</footer>
+</body>  
+</html>
+
