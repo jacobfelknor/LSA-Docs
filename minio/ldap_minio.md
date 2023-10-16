@@ -26,20 +26,20 @@ For example, the following attaches the `consoleAdmin` policy to a specific user
 
 ```bash
 # specific user
-mc admin policy attach local consoleAdmin --user='CN=User Name,OU=example,OU=example,OU=example,DC=example,DC=example'
+mc idp ldap policy attach local consoleAdmin --user='CN=User Name,OU=example,OU=example,OU=example,DC=example,DC=example'
 # specific group
-mc admin policy attach local consoleAdmin --group='CN=Group Name,OU=example,OU=example,OU=example,DC=example,DC=example'
+mc idp ldap policy attach local consoleAdmin --group='CN=Group Name,OU=example,OU=example,OU=example,DC=example,DC=example'
 ```
 
 ## Detach a Policy
 
-To detach a policy, the process is similar except we will use `mc admin policy detach`
+To detach a policy, the process is similar except we will use `mc idp ldap policy detach`
 
 ```bash
 # specific user
-mc admin policy detach local consoleAdmin --user='CN=User Name,OU=example,OU=example,OU=example,DC=example,DC=example'
+mc idp ldap policy detach local consoleAdmin --user='CN=User Name,OU=example,OU=example,OU=example,DC=example,DC=example'
 # specific group
-mc admin policy detach local consoleAdmin --group='CN=Group Name,OU=example,OU=example,OU=example,DC=example,DC=example'
+mc idp ldap policy detach local consoleAdmin --group='CN=Group Name,OU=example,OU=example,OU=example,DC=example,DC=example'
 ```
 
 ## View Group to Policy Mapping
@@ -48,6 +48,11 @@ By using LDAP, we unfortunately lose the ability to manage our policies from the
 
 ```bash
 mc admin policy entities local
+
+# NOTE: it feels like you should use
+mc idp ldap policy entities local
+# but that doesn't work!!! Still use mc admin for 
+# now. Seems like they're in a transition period here
 ```
 
 ## Access Keys for LDAP

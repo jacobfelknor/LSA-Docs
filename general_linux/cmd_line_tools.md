@@ -6,56 +6,6 @@ A series of intersting command line tools I've stumbled upon that could be usefu
 
 If you need to use a non-aliased version of a command, you can do so by prepending `\` to it. For example, I alias the `cat` command to use `bat` instead (shown later). If I instead really wanted to use built in `cat`, I could run `\cat`
 
-## Powerline Go
-
-Informative shell prompt
-
-[https://github.com/justjanne/powerline-go](https://github.com/justjanne/powerline-go)
-
-## jc
-
-"JSON Convert", JSONifies the output of many CLI tools, file-types, and common strings for easier parsing in scripts.
-
-See its [GitHub](https://github.com/kellyjonbrazil/jc?utm_source=tldrnewsletter)
-
-Example:
-
-```bash
-lsblk | jc --lsblk
-```
-
-```json
-[
-  {
-    "name": "vda",
-    "maj_min": "252:0",
-    "rm": false,
-    "size": "50G",
-    "ro": false,
-    "type": "disk",
-    "mountpoint": null
-  },
-  {
-    "name": "vda1",
-    "maj_min": "252:1",
-    "rm": false,
-    "size": "1G",
-    "ro": false,
-    "type": "part",
-    "mountpoint": "/boot"
-  },
-  {
-    "name": "vda2",
-    "maj_min": "252:2",
-    "rm": false,
-    "size": "49G",
-    "ro": false,
-    "type": "part",
-    "mountpoint": null
-  },
-]
-```
-
 ## bat
 
 Better `cat`. Allows output of files in syntax highlighted ways.
@@ -106,4 +56,54 @@ sudo dnf/apt install ncdu
 
 ## Git Delete Merged Branches
 
-A more convienient way to keep local and remote deleted branches synced. See its [GitHub repo](https://github.com/hartwork/git-delete-merged-branches?utm_source=tldrnewsletter) for more details.
+A more convenient way to keep local and remote deleted branches synced. See its [GitHub repo](https://github.com/hartwork/git-delete-merged-branches?utm_source=tldrnewsletter) for more details.
+
+## Powerline Go
+
+Informative shell prompt
+
+[https://github.com/justjanne/powerline-go](https://github.com/justjanne/powerline-go)
+
+## jc
+
+"JSON Convert", JSONifies the output of many CLI tools, file-types, and common strings for easier parsing in scripts.
+
+See its [GitHub](https://github.com/kellyjonbrazil/jc?utm_source=tldrnewsletter)
+
+Example:
+
+```bash
+lsblk | jc --lsblk
+```
+
+```json
+[
+  {
+    "name": "vda",
+    "maj_min": "252:0",
+    "rm": false,
+    "size": "50G",
+    "ro": false,
+    "type": "disk",
+    "mountpoint": null
+  },
+  {
+    "name": "vda1",
+    "maj_min": "252:1",
+    "rm": false,
+    "size": "1G",
+    "ro": false,
+    "type": "part",
+    "mountpoint": "/boot"
+  },
+  {
+    "name": "vda2",
+    "maj_min": "252:2",
+    "rm": false,
+    "size": "49G",
+    "ro": false,
+    "type": "part",
+    "mountpoint": null
+  },
+]
+```
