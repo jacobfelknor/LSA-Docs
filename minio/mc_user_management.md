@@ -11,12 +11,14 @@ See [official docs](https://min.io/docs/minio/linux/reference/minio-mc-admin/mc-
 Add access key to user
 
 ```bash
+# Must use username, even for LDAP, as of RELEASE.2023-10-14T01-57-03Z
 mc admin user svcacct add --name "name for key" ALIAS USERNAME/LDAP_DN
 ```
 
 List access keys for user
 
 ```bash
+# Must use LDAP DN as of RELEASE.2023-10-14T01-57-03Z
 mc admin user svcacct ls ALIAS USERNAME/LDAP_DN
 ```
 
@@ -36,6 +38,7 @@ mc admin user svcacct rm ALIAS ACCESS_KEY
 ## General User Accounts
 
 ```bash
+# must use LDAP_DN as of RELEASE.2023-10-14T01-57-03Z
 mc admin user info ALIAS USERNAME/LDAP_DN
 ```
 
