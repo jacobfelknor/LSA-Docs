@@ -2,7 +2,7 @@
 
 It can be useful to dynamically assign certain groups to current and future users automatically. This removes the requirement that a user exists prior to group assignment, and also can help simulate "nested groups" in linux which are not directly supported.
 
-A common case is iff our linux machine is joined to Active Directory, we can specify that a certain AD group should be members of certain local groups. For example, if all domain users should be members of the built in `dialout` group, we can achieve this.
+A common case is if our linux machine is joined to Active Directory, we can specify that a certain AD group should be members of certain local groups. For example, if all domain users should be members of the built in `dialout` group, we can achieve this.
 
 These notes adapted from <https://help.ubuntu.com/community/LDAPClientAuthentication#Assign_local_groups_to_users>
 
