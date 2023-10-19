@@ -65,7 +65,7 @@ Open `gnome-tweaks`, under `Extensions`, enable desktop icons, ubuntu appindicat
 
 ## RHEL 8
 
-1. Install `xrdp`, `xorgrdp`, and `xrdp-selinux` (which should come as a dependency of `xrdp`, but ensure that it is installed)
+1. Install `xrdp`, `xorgxrdp`, and `xrdp-selinux` (which should come as a dependency of `xrdp`, but ensure that it is installed)
 
 ```bash
 sudo dnf install xrdp xorgxrdp xrdp-selinux

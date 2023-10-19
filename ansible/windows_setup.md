@@ -8,9 +8,17 @@ Note: c
 
 The easiest way to set this up is to run
 
-```bash
+```powershell
 winrm quickconfig
 ```
+
+After config is done, run the following to allow unencrypted connections, if necessary. This can fix some `Bad HTTP response returned from server. Code 500` errors if you're getting them.
+
+```powershell
+Set-Item -Path WSMan:\localhost\Service\AllowUnencrypted -Value true
+```
+
+If you get an error on this command about an interface being public, try disabling any network interfaces created by WSL or Hyper-V in the control panel. Then, run the command again. If it worked this time, you may re-enable these interfaces.
 
 ## Control Machine Dependencies
 
@@ -22,7 +30,7 @@ We must install a few additional dependencies on our control machine.
 dnf install gcc python3-devel krb5-devel krb5-libs krb5-workstation
 
 # Through Apt (Ubuntu)
-sudo apt install python-dev libkrb5-dev krb5-user
+sudo apt install python3-dev libkrb5-dev krb5-user
 ```
 
 ## Python Dependencies
