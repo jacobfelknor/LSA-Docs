@@ -46,8 +46,8 @@
     sudo pam-auth-update
     ```
 
-    ![image](pam1.png)
-    ![image](pam2.png)
+    ![image](./images/pam1.png)
+    ![image](./images/pam2.png)
 
 6. Configure sssd to not use fully qualified names. This allows a user to login as `foo` instead of `foo@example.local`
 
@@ -120,6 +120,6 @@
     username    ALL=(ALL) NOPASSWD:ALL
     ```
 
-    ![image](sudoers_guide1.png)
+    ![image](./images/sudoers_guide1.png)
 
     see [Digital Ocean](https://www.digitalocean.com/community/tutorials/how-to-edit-the-sudoers-file) for more information if needed
