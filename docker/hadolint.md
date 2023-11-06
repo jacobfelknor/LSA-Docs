@@ -1,6 +1,6 @@
 # hadolint
 
-`hadolint` is a linter for `Dockerfile` that can catch some common mistakes and make suggestions on your build. For example, it tells you to pin down `pip` installs so that builds are deterministic. 
+`hadolint` is a linter for `Dockerfile` that can catch some common mistakes and make suggestions on your build. For example, it tells you to pin down `pip` installs so that builds are deterministic.
 
 It can be installed from its [GitHub releases](https://github.com/hadolint/hadolint/releases/) page.
 
@@ -20,3 +20,12 @@ hadolint /path/to/Dockerfile
 ## VSCode Extension
 
 Install `exiasr.hadolint` VSCode extension to get live linting.
+
+## Ignore
+
+Create a file called `.hadolint.yaml` containing specific ignore codes. For example,
+
+```yml
+ignored:
+  - DL3018
+```

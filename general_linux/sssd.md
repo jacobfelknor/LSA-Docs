@@ -22,3 +22,11 @@ sss_cache -Ed DOMAIN
 # clear for a particular user
 sss_cache -u username
 ```
+
+You may also need to manually remove cache files and restart sssd
+
+```bash
+rm /var/lib/sss/db/*
+
+systemctl restart sssd
+```

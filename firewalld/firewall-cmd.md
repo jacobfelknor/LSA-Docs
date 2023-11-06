@@ -20,6 +20,20 @@ sudo firewall-cmd --zone=public --remove-port=<port>/tcp --permanent
 sudo firewall-cmd --reload
 ```
 
+Add a named service with
+
+```bash
+# may not be working. Verify and update cmd as needed
+sudo firewall-cmd --zone=public --service=<service_name> --add-port=<port>/tcp --permanent
+```
+
+Remove a named service with
+
+```bash
+# may not be working. Verify and update cmd as needed
+sudo firewall-cmd --zone=public --remove-service=<service_name> --permanent
+```
+
 ## Firewall Zones
 
 There is really good documentation by RedHat [here](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/configuring_and_managing_networking/using-and-configuring-firewalld_configuring-and-managing-networking#working-with-firewalld-zones_using-and-configuring-firewalld) that this is based on
