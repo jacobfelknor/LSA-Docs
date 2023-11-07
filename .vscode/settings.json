@@ -1,6 +1,10 @@
 {
     "cSpell.words": [
+        "existingcontainer",
         "firewalld",
-        "psql"
+        "myrestorevol",
+        "myvol",
+        "psql",
+        "subdir"
     ]
 }
