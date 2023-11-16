@@ -1,6 +1,6 @@
 # Prevent MacOS Sleep On Lid Close
 
-If you're repurposing an old Macbook for some server usage, you probably want to disable automatic screen locking and sleep options. This can typically be done in System Preferences under the Battery/Power settings. Howver, this does not control whether the display is locked/turned off when closing the laptop lid. In order to prevent this, we can run the following command:
+If you're repurposing an old MacBook for some server usage, you probably want to disable automatic screen locking and sleep options. This can typically be done in System Preferences under the Battery/Power settings. However, this does not control whether the display is locked/turned off when closing the laptop lid. In order to prevent this, we can run the following command:
 
 ```bash
 sudo pmset -a disablesleep 1
