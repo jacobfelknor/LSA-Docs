@@ -31,6 +31,9 @@ dnf install gcc python3-devel krb5-devel krb5-libs krb5-workstation
 
 # Through Apt (Ubuntu)
 sudo apt install python3-dev libkrb5-dev krb5-user
+
+# Alpine
+pkg add python3-dev krb5-dev krb5-libs krb5 gcc gcompat libstdc++ libc-dev musl-dev
 ```
 
 ## Python Dependencies
