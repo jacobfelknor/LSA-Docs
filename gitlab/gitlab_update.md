@@ -37,6 +37,10 @@ metadata_expire=300
 
 When you specifically want to upgrade GitLab itself, use the `--enablerepo` option specifying the repo you wish to enable. For this example, it would be `--enablerepo=gitlab_gitlab-ee`.
 
+## DNF Version Lock
+
+Alternatively, you can use [`dnf versionlock`](../dnf/dnf_pinning.md). See those notes for details. If using this method, specifying the `--enablerepo` option is not necessary, but you must first remove the lock before the upgrade will be allowed to continue.
+
 ## Upgrade
 
 To upgrade, directly jumping to next version
@@ -72,7 +76,7 @@ Again, make sure all background migrations and jobs have completed successfully.
 
 Check the What's New tab, in the question mark in the top bar near your profile picture. This will alert you to any fancy new toys inside GitLab
 
-# Runner Upgrade 
+# Runner Upgrade
 
 For best results, keep the version of GitLab and the version of your GitLab Runners in sync.
 

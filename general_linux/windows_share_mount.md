@@ -24,3 +24,5 @@ If, instead, you need a permanent mount that persists after reboot, we will add 
 ```text
 //WIN_SHARE_IP/<share_name>  /mnt/win_share cifs  uid=user,rw,suid,credentials=/root/secret.txt,file_mode=0440,dir_mode=0550 0 0
 ```
+
+If you'd like to instead mount for a particular user on login, see [libpam-mount](./libpam_mount.md)

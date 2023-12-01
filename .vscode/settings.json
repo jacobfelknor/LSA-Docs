@@ -1,15 +1,22 @@
 {
     "cSpell.words": [
+        "cifs",
         "cleartext",
         "existingcontainer",
         "firewalld",
         "hostnames",
+        "libpam",
+        "mkhomedir",
         "myrestorevol",
         "myvol",
         "NOPASSWD",
         "psql",
+        "resolvectl",
+        "skel",
         "subdir",
         "unhashed",
+        "versionlock",
+        "versionlocks",
         "windir"
     ]
 }
