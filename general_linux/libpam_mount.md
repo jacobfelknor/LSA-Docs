@@ -52,7 +52,7 @@ There are two files the must get edited to configure PAM. If you have never manu
 
 First, we should take a look at `/etc/pam.d/common-auth` and ensure the noted line is present.
 
-```ini
+```conf
 ...
 
 auth    required                        pam_permit.so
@@ -69,7 +69,7 @@ Next, we should look at `/etc/pam.d/common-session`. Again, ensure the noted lin
 
 > **NOTE:** If you are also using the `pam_mkhomedir` module, its possible that `pam_mount` may interfere with the automatic home directory creation. In my case, I experience that the directory was created, but nothing was copied from `/etc/skel` when a new user logged in. Take note of the location of `pam_mkhomedir` in the following config to ensure they can work correctly together, and make sure it has been set to `required`.
 
-```ini
+```conf
 ...
 # and here are more per-package modules (the "Additional" block)
 session required        pam_unix.so
