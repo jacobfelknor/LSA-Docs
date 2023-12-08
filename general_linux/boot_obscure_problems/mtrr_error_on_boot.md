@@ -6,7 +6,7 @@ One time, when trying to boot into an Ubuntu live CD for installation, I ran int
 pmd_set_huge: Cannot satisfy [mem 0xf8000000-0xf8200000] with a huge-page mapping due to MTRR override.
 ```
 
-> **NOTE:** At first, it was just hanging at the splash screen with no output on why. To show the logs on boot, remove the `quiet` and `splash` parameters from the GRUB edit menu, reached by pressing `e` when presented with the GRUB menu
+> **NOTE:** At first, it was just hanging at the splash screen with no output on why. To show the kernel output on boot, remove the `quiet` and `splash` parameters from the GRUB edit menu, reached by pressing `e` when presented with the GRUB menu
 
 For some more context on what MTRR is, see [this stackexchange post](https://unix.stackexchange.com/a/578515) or [MTRR's wikipedia entry](https://en.wikipedia.org/wiki/Memory_type_range_register).
 
