@@ -107,3 +107,7 @@ lsblk | jc --lsblk
   },
 ]
 ```
+
+## tqdm
+
+See github page at <https://github.com/tqdm/tqdm#tqdm>. Nice progress bar for python, including a cmd line utility which you can pipe normal commands to.
