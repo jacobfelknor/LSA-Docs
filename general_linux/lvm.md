@@ -77,8 +77,12 @@ Extend the logical volume to use new allocated space
 
 ```bash
 sudo lvextend -l +100%FREE /dev/<vg_name>/<lv_name>
+
 # grow filesystem, if necessary
+# xfs
 sudo xfs_growfs /mount/point
+# ext4
+sudo resize2fs /dev/path/to/partition
 ```
 
 ## Remove Logical Volume
