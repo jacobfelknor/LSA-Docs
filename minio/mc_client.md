@@ -35,6 +35,8 @@ mc admin info ALIAS
 
 # recursively heal an instance
 mc admin heal ALIAS
+# use verbose to view all disks 
+mc admin heal local --verbose
 
 # delete all objects and versions, recursively
 mc rm --recursive --versions --force ALIAS/PATH
