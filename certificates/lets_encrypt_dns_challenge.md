@@ -15,6 +15,5 @@ sudo certbot certonly [--dry-run] --manual --preferred-challenges dns-01 \
 # Key is saved at:         /etc/letsencrypt/live/jacobfelknor.com/privkey.pem
 
 # Renew
-Without a manual auth hook, certs must be renewed manually by running the same command we did to obtain the cert
+# Without a manual auth hook, certs must be renewed manually by running the same command we did to obtain the cert
 ```
-
