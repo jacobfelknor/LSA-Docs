@@ -111,3 +111,42 @@ lsblk | jc --lsblk
 ## tqdm
 
 See github page at <https://github.com/tqdm/tqdm#tqdm>. Nice progress bar for python, including a cmd line utility which you can pipe normal commands to.
+
+## banner
+
+This is a classic-style banner program similar to the one found in Solaris or AIX in the late 1990s.  It prints a short string to the console in very large letters.
+
+To install,
+
+```bash
+# RHEL
+dnf install banner
+# Debian
+apt install sysvbanner
+```
+
+Try it out!
+
+```bash
+banner "hello"
+
+#     #  #######  #        #        #######  
+#     #  #        #        #        #     #  
+#     #  #        #        #        #     #  
+#######  #####    #        #        #     #  
+#     #  #        #        #        #     #  
+#     #  #        #        #        #     #  
+#     #  #######  #######  #######  ####### 
+
+# for "block" letters, replace with sed
+banner "hello" | sed 's/#/█/g'
+
+█     █  ███████  █        █        ███████  
+█     █  █        █        █        █     █  
+█     █  █        █        █        █     █  
+███████  █████    █        █        █     █  
+█     █  █        █        █        █     █  
+█     █  █        █        █        █     █  
+█     █  ███████  ███████  ███████  ███████  
+
+```
