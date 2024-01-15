@@ -114,6 +114,8 @@ See github page at <https://github.com/tqdm/tqdm#tqdm>. Nice progress bar for py
 
 ## banner
 
+See <https://unix.stackexchange.com/a/287952>
+
 This is a classic-style banner program similar to the one found in Solaris or AIX in the late 1990s.  It prints a short string to the console in very large letters.
 
 To install,
