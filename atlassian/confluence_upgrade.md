@@ -14,9 +14,11 @@ The following configuration files and MySQL connector should be backed up for la
 - `/opt/atlassian/confluence/bin/setenv.sh`
 - `/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java.jar`
 
+We will compare these file versions to those which the installer created.
+
 ## Download and Install New Version
 
-Download the binary version you wish to install. For example, for version `8.5.4`,
+Download the binary for the version you wish to install. For example, for version `8.5.4`,
 
 ```bash
 wget https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-8.5.4-x64.bin
