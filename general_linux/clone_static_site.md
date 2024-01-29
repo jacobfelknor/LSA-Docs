@@ -1,6 +1,6 @@
 # Clone a Static Website
 
-source: https://superuser.com/a/999189
+source: <https://superuser.com/a/999189>
 
 Sometimes it can be helpful to make a copy of a public static website. You can use this copy as a mirror, serve it in an offline environment, or serve it to a network where the external version is blocked.
 It is relatively simple to make the clone with the `wget` command.
