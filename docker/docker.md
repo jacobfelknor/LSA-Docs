@@ -13,6 +13,8 @@ sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 ```
 
+> **NOTE:** If you're running RHEL, the CentOS packages tend to work but may cause issues during future `dnf update`'s. I've found that the leftover package `containers-common` conflicts with some of the packages installed by Docker, specifically the `runc` package has mismatched dependencies. Running a `dnf update --allowerasing --nobest`, followed by `dnf erase containers-common` has set me up for cleaner upgrades in the future.
+
 ## Storage Location
 
 If you'd like to move the default storage location for docker's containers and images, we can do so it its configuration. First, ensure the docker daemon is stopped. If you already have a working installation, move all data from `/var/lib/docker` to its new location. Edit or create the file `/etc/docker/daemon.json` and configure the following
@@ -108,4 +110,4 @@ The only solution I found that worked was from [stackoverflow](https://stackover
 
 I renamed `C:\Windows\System32\drivers\cbfs6.sys` to `C:\Windows\System32\drivers\cbfs6_bad_for_docker.sys` and rebooted. The reboot took an extraordinary amount of time, but eventually it came back up and my docker build then worked.
 
-If I run into this again, try just restarting the docker service instead of a full reboot. I was worried my machine wasn't gonna come back up there for a while. 
+If I run into this again, try just restarting the docker service instead of a full reboot. I was worried my machine wasn't gonna come back up there for a while.

@@ -55,12 +55,14 @@ docker ps
 docker exec -it -u postgres <container id> /bin/bash
 
 # launch psql, create the db
-psql
+psql -U postgres -d postgres
+# if necessary, drop the database
+drop database <database name>;
 create database <database name>;
 exit
 
 # restore backup file to new db
-psql <database name> < /path/to/<database name>.sql
+psql -U postgres -d <database name> < /path/to/<database name>.sql
 ```
 
 Your database should now be available in the new container.
