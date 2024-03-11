@@ -6,6 +6,8 @@ It is often helpful to set a static IP address on a linux machine, particularly 
 
 Ubuntu machines use a utility called [`netplan`](https://netplan.io/) to, for lack of a better term, "plan" the network configuration of its interfaces. It can be thought of a "translator" between a common YAML config file to the "renderer" of your choice. It reads configuration files at `/etc/netplan/*.yaml`, then depending on the renderer, generates the necessary configuration and gives it to the particular networking daemon. `netplan` currently supports `NetworkManager` and `networkd` (a `systemd` networking daemon) as its renderers. In my usage, I've used `networkd` when the machine I'm configuring is a server and `NetworkManager` when the machine is a workstation.
 
+For more details, see [this Ubuntu documentation page](https://ubuntu.com/server/docs/network-configuration)
+
 ### NetworkManager
 
 The simplest (as far as `netplan` goes) configuration is to let `NetworkManager` handle all devices in its default way, which is to bring all things up via DHCP. The `netplan` configuration for this would be
