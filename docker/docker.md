@@ -89,6 +89,18 @@ sudo docker inspect <container_id>
 }
 ```
 
+Another really helpful property of the inspect output is which compose file started the container, if applicable.
+
+```bash
+sudo docker container inspect <container_id> | grep compose
+
+# Example output, truncated
+"com.docker.compose.project": "<project name>",
+"com.docker.compose.project.config_files": "/path/to/docker-compose.yml",
+"com.docker.compose.project.working_dir": "/path/to",
+"com.docker.compose.service": "<service name>",
+```
+
 ## Shell Options
 
 By default, the `RUN` commands inside the `Dockerfile` are executed by `/bin/sh`. Sometimes, they expect that you're in a `bash` shell, or you may have items inside your `~/.bashrc` that need to be read before executing the command. In leiu of sourcing and calling `bash` explicity, you can add the following to your `Dockerfile` that will do this for you.
