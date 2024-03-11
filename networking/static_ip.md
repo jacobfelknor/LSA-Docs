@@ -41,6 +41,12 @@ network:
   renderer: NetworkManager
 ```
 
+Regardless of which option you choose, `netplan` will generate `NetworkManager` "keyfiles" for each. You can view which "keyfile" governs your interface by running
+
+```bash
+sudo nmcli -f NAME,DEVICE,FILENAME connection show
+```
+
 ### Systemd-networkd
 
 Alternatively, we may use the `networkd` backend when setting our static IP. The `netplan` YAML is _almost_ the same, except that we switch the renderer.
