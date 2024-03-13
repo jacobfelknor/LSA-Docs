@@ -28,6 +28,8 @@ There is a "hidden" digit that can be pre-pended to our octal value that can con
 
 The basic filesystem permissions described above can cover most cases. However, sometimes a more granular permission system is required to achieve the desired results. In this example, I will show a particular case in which I needed an ACL, but there is so much more possible. For a more detailed explanation, see <https://www.redhat.com/sysadmin/linux-access-control-lists>.
 
+Another helpful post on this topic: <https://www.cs.swarthmore.edu/newhelp/sharing_files.html#:~:text=setfacl%20is%20the%20command%20used,make%20these%20ACLs%20the%20default.>
+
 ### Case Example
 
 In my case, I needed a specific directory to be group read/writeable for all members of the particular group. Any user in this group must be able to create files within that directory, and any other user must be able to read, write, or delete the file that the first user left for them.
@@ -47,10 +49,12 @@ The default permissions a file gets when a user creates it is controlled by the 
 Finally, we get to my solution. It was possible for me to set a POSIX ACL for the particular directory achieving what I wanted.
 
 ```bash
-# set the default ACL for a directory, so newly created files take on these permissions
-setfacl -d -m group:GROUPNAME:rw /path/to/directory
+# set the default ACL for this and any sub-directories, so newly created files take on these permissions
+# omit -R if you don't want to do this recursively
+setfacl -R -d -m group:GROUPNAME:rw /path/to/directory
 # set the ACL for existing files
-setfacl -m group:GROUPNAME:rw /path/to/directory
+# omit -R if you don't want to do this recursively
+setfacl -R -m group:GROUPNAME:rw /path/to/directory
 ```
 
 Now, in combination with setting `SGID` on the parent directory (`chmod g+s`), any new files created in this directory will have `exampleuser:examplegroup` ownership with `664` permissions.
