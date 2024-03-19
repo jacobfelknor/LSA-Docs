@@ -26,12 +26,12 @@ server {
     server_name example.com;
 
     location /the/url/path {
-        alias /www/mysite/the/filesystem/path;
+        alias /www/mysite/the/filesystem/path/;
         index index.html
     }
 
     location / {
-        alias /www/mysite;
+        alias /www/mysite/;
         index index.html;
     }
 }
