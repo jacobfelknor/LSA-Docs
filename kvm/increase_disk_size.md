@@ -22,4 +22,29 @@ If you're using Fedora based, it's likely that it's using LVM.
     ```bash
     sudo lvextend -l +100%FREE /dev/mapper/rhel-root
     sudo xfs_growfs /dev/mapper/rhel-root
+    # or, 
+    sudo resize2fs /dev/sdX
     ```
+
+If you do not have a GUI available, use `parted` instead to grow your partition
+
+```bash
+sudo parted /dev/sdX
+
+# print partitions, including free space
+print free
+
+# if your filesystem lives on sd3, for example, you'll use that number as the
+# partition number (double check!). Extend it fully
+resizepart X 100%
+quit
+
+# check if your partition has been extended
+lsblk
+
+# extend pv, lv, filesystem, etc.
+pvresize /dev/sdX
+lvextend -l +100%FREE /dev/mapper/lv-name
+xfs_growfs /dev/mapper/lv-name
+resize2fs /dev/mapper/lv-name
+```

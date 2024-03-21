@@ -28,7 +28,6 @@ git pull origin
 git fetch other-origin
 ```
 
-
 However, sometimes all you'd like to do is `push` changes to two different remotes, but only ever `fetch` from one. We can accomplish this by modifying our `.git/config` file inside the local repository.
 
 ```ini
@@ -39,4 +38,4 @@ However, sometimes all you'd like to do is `push` changes to two different remot
     pushurl = https://other-origin.com/myproject.git
 ```
 
-Now, we can do a `git push` which will push changes to both remotes simultaneously, while `git fetch` or `git pull` will only get changes from the `example.com` origin. 
+Now, we can do a `git push` which will push changes to both remotes simultaneously, while `git fetch` or `git pull` will only get changes from the `example.com` origin.
