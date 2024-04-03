@@ -47,12 +47,7 @@ mc idp ldap policy detach local consoleAdmin --group='CN=Group Name,OU=example,O
 By using LDAP, we unfortunately lose the ability to manage our policies from the console. In order to print all policies and their group mappings, use the following command
 
 ```bash
-mc admin policy entities local
-
-# NOTE: it feels like you should use
 mc idp ldap policy entities local
-# but that doesn't work!!! Still use mc admin for 
-# now. Seems like they're in a transition period here
 ```
 
 ## Access Keys for LDAP
