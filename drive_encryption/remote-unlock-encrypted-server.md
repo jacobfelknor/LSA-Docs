@@ -38,6 +38,8 @@ These steps inspired by and adapted from <https://forums.centos.org/viewtopic.ph
 
     ```bash
     sudo dracut -f -v 
+    # Check that the initramfs has been updated
+    ls -la /boot/initramfs-$(uname -r).img
     ```
 
 4. Add early networking capabilities to our GRUB configuration on server at `/etc/default/grub`. Note that the IP address, netmask, and interface name should match what is outputted by `ip a`, which should be a static IP configured at least at the router DHCP reserved address level. You can obtain the default gateway with `ip r`.
