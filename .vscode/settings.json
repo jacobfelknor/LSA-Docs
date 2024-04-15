@@ -2,11 +2,13 @@
     "cSpell.words": [
         "cifs",
         "cleartext",
+        "elasticdump",
         "existingcontainer",
         "firewalld",
         "hostnames",
         "libpam",
         "mkhomedir",
+        "multielasticdump",
         "myrestorevol",
         "myvol",
         "NOPASSWD",

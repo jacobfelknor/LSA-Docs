@@ -18,6 +18,10 @@ sudo snap install core
 sudo snap refresh core
 # remove any existing certbot packages
 sudo dnf remove certbot
+
+# create symlink for classic snaps
+ln -s /var/lib/snapd/snap /snap
+
 # install certbot snap
 sudo snap install --classic certbot
 # ensure certbot is available on path
