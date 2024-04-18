@@ -20,6 +20,7 @@
         "unhashed",
         "versionlock",
         "versionlocks",
+        "virsh",
         "windir"
     ]
 }
