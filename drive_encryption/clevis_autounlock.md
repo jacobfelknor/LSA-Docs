@@ -1,4 +1,14 @@
-# Automatic Unlocking of LUKS Volumes on Boot via TPM2
+# Automatic Unlocking of LUKS Volumes on Boot
+
+## via Tang
+
+**TODO!**
+
+This is also be possible via a `tang` server. This has the added advantage of only unlocking automatically if the machine is on (assumed to be) a trusted, secure network. If the machine was "stolen" or otherwise removed from this trusted network, a password would again be required to unlock the machine.
+
+See <https://github.com/latchset/tang>
+
+## via TPM2
 
 These notes based on [RedHat Documentation](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/9/html/security_hardening/configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption_security-hardening#configuring-manual-enrollment-of-volumes-using-tpm2_configuring-automated-unlocking-of-encrypted-volumes-using-policy-based-decryption), adapted to work for both RHEL and Ubuntu machines
 
