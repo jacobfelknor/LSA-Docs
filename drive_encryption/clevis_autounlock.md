@@ -46,7 +46,16 @@ sda                                             8:0    0    12G  0 disk
 Bind to TPM
 
 ```bash
+# will prompt for any existing LUKS key
 clevis luks bind -d /dev/sda2 tpm2 '{"hash":"sha256","key":"rsa"}'
+
+# if instead, you need to run non-interactive, you can pass in existing key via stdin or key file
+
+# stdin
+echo -n 'existing key' | clevis luks bind -d /dev/sda2 tpm2 '{"hash":"sha256","key":"rsa"}' -k -
+
+# keyfile
+clevis luks bind -d /dev/sda2 tpm2 '{"hash":"sha256","key":"rsa"}' -k /path/to/keyfile
 ```
 
 Check that it bound
