@@ -48,10 +48,13 @@ Once we've confirmed the new swap is available, add an entry to `/etc/fstab` so 
 /swap_file.img         swap    swap    sw      0       0
 ```
 
-If you need to, you can remove the swap file from your swap space
+## Remove Swap File
+
+To free up disk space, you can undo your swap file if you no longer need it
 
 ```bash
 swapoff /swap_file.img
+rm /swap_file.img
 ```
 
-Make sure to also remove the entry from `/etc/fstab`.
+Make sure to also remove the entry from `/etc/fstab`, so there are no boot errors.
