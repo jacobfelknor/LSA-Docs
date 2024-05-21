@@ -46,7 +46,7 @@ net:
 ...
 ```
 
-We also need to open the firewall to the port mongo is binded to. 
+We also need to open the firewall to the port mongo is binded to.
 
 ```bash
 sudo firewall-cmd --zone=public --add-port=27017/tcp --permanent
@@ -56,7 +56,7 @@ sudo firewall-cmd --reload
 # Authorization
 
 By default, the MongoDB instance will have no authentication required for connections.
-This is fine for local development (maybe...) but needs to be addressed for production/testing instances. 
+This is fine for local development (maybe...) but needs to be addressed for production/testing instances.
 
 ## Enable Access Control
 
@@ -138,7 +138,6 @@ MongoDB also allows authenticating via a connection string for programmatic acce
 ```python
 "mongodb://user:password@host:27017"
 ```
-
 
 # Backup/Restore
 
