@@ -52,7 +52,11 @@ sudo dnf install gitlab-ee --enablerepo=gitlab_gitlab-ee
 To list specific versions available to upgrade to
 
 ```bash
+# RHEL
 sudo dnf --showduplicates list gitlab-ee --enablerepo=gitlab_gitlab-ee
+
+# Ubuntu
+sudo apt list -a gitlab-ee
 ```
 
 To upgrade to a specific version
@@ -61,6 +65,9 @@ To upgrade to a specific version
 sudo dnf install gitlab-ee-<version> --enablerepo=gitlab_gitlab-ee
 # for example,
 sudo dnf install gitlab-ee-15.4.3-ee.0.el8 --enablerepo=gitlab_gitlab-ee
+
+# ubuntu
+apt install gitlab-ee=15.4.3-ee.0
 ```
 
 Typically, I'll update GitLab to the version I want, and then will update the rest of the system packages but want to exclude GitLab. This is especially true when I'm not updating GitLab to the latest version. You can do this with the following:
