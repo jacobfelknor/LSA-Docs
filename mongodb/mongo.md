@@ -91,7 +91,8 @@ switched to db admin
       pwd: passwordPrompt(), // instead of cleartext password
       roles: [
         { role: "userAdminAnyDatabase", db: "admin" },
-        { role: "readWriteAnyDatabase", db: "admin" }
+        { role: "dbAdminAnyDatabase", db: "admin" },
+        { role: "readWriteAnyDatabase", db: "admin" },
       ]
     }
   );
