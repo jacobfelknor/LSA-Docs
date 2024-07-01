@@ -14,11 +14,22 @@ The following configuration files and MySQL connector should be backed up for la
 - `/opt/atlassian/confluence/bin/setenv.sh`
 - `/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java.jar`
 
+I usually copy the files from the server using `scp`, placing them in my working location in VSCode to use its compare features.
+
+```bash
+mkdir -p ./confluence_upgrade/before
+scp user@confluence:/opt/atlassian/confluence/conf/server.xml ./confluence_upgrade/before/server.xml
+scp user@confluence:/opt/atlassian/confluence/bin/setenv.sh ./confluence_upgrade/before/setenv.xml
+scp user@confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java.jar ./confluence_upgrade/before/mysql-connector-java.jar
+```
+
 We will compare these file versions to those which the installer created.
 
 ## Download and Install New Version
 
-Download the binary for the version you wish to install. For example, for version `8.5.4`,
+Download the binary for the version you wish to install. See <https://www.atlassian.com/software/confluence/download-archives>
+
+For example, for version `8.5.4`,
 
 ```bash
 wget https://www.atlassian.com/software/confluence/downloads/binary/atlassian-confluence-8.5.4-x64.bin
@@ -39,6 +50,15 @@ Couple things to note:
     - Is not controlled via the installer. The questions asking if the installer should start or stop the service did so externally from the `init.d` service. This means that confluence may be running but the service reports it as dead (or vice versa). I typically opt to use the `init.d` service and not use the installer so it status consistent.
 
 ## Compare Configs
+
+Copy files from the server to local again in order to compare.
+
+```bash
+mkdir -p ./confluence_upgrade/after
+scp user@confluence:/opt/atlassian/confluence/conf/server.xml ./confluence_upgrade/after/server.xml
+scp user@confluence:/opt/atlassian/confluence/bin/setenv.sh ./confluence_upgrade/after/setenv.xml
+scp user@confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java.jar ./confluence_upgrade/after/mysql-connector-java.jar
+```
 
 Compare the configuration files you backed up in the first step with the new versions created by the upgrade.
 

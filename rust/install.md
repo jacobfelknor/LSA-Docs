@@ -19,8 +19,17 @@ To install for all users of the linux system, we need to use the standalone inst
 For example, to install on a `x86_64` system, I did
 
 ```bash
-wget https://static.rust-lang.org/dist/rust-1.74.1-x86_64-unknown-linux-gnu.tar.gz
-tar xvf rust-1.74.1-x86_64-unknown-linux-gnu.tar.gz
-cd rust-1.74.1-x86_64-unknown-linux-gnu
+wget https://static.rust-lang.org/dist/rust-1.78.0-x86_64-unknown-linux-gnu.tar.gz
+tar xvf rust-1.78.0-x86_64-unknown-linux-gnu.tar.gz
+cd rust-1.78.0-x86_64-unknown-linux-gnu
+sudo ./install.sh
+```
+
+For Alpine Linux, they have a `musl` package
+
+```bash
+wget https://static.rust-lang.org/dist/rust-1.78.0-x86_64-unknown-linux-musl.tar.xz
+tar xvf rust-1.78.0-x86_64-unknown-linux-musl.tar.xz
+cd rust-1.78.0-x86_64-unknown-linux-musl
 sudo ./install.sh
 ```
