@@ -19,7 +19,7 @@ I usually copy the files from the server using `scp`, placing them in my working
 ```bash
 mkdir -p ./confluence_upgrade/before
 scp user@confluence:/opt/atlassian/confluence/conf/server.xml ./confluence_upgrade/before/server.xml
-scp user@confluence:/opt/atlassian/confluence/bin/setenv.sh ./confluence_upgrade/before/setenv.xml
+scp user@confluence:/opt/atlassian/confluence/bin/setenv.sh ./confluence_upgrade/before/setenv.sh
 scp user@confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java.jar ./confluence_upgrade/before/mysql-connector-java.jar
 ```
 
@@ -56,7 +56,7 @@ Copy files from the server to local again in order to compare.
 ```bash
 mkdir -p ./confluence_upgrade/after
 scp user@confluence:/opt/atlassian/confluence/conf/server.xml ./confluence_upgrade/after/server.xml
-scp user@confluence:/opt/atlassian/confluence/bin/setenv.sh ./confluence_upgrade/after/setenv.xml
+scp user@confluence:/opt/atlassian/confluence/bin/setenv.sh ./confluence_upgrade/after/setenv.sh
 scp user@confluence:/opt/atlassian/confluence/confluence/WEB-INF/lib/mysql-connector-java.jar ./confluence_upgrade/after/mysql-connector-java.jar
 ```
 
