@@ -13,7 +13,7 @@ result = client['database_name']['collection_name'].aggregate([
                 '$divide': [
                     {
                         '$bsonSize': '$$ROOT'
-                    }, 1000000
+                    }, 1048576
                 ]
             }
         }
