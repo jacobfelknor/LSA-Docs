@@ -1,0 +1,1389 @@
+<!doctype html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+<head>
+<meta name="description" content="&quot;What should I use HTTPS for?&quot; is a question whose answer has changed over the years. Here's an attempt to piece the history together.   The web started off as just HTTP. This allowed for an enormous amount of things, but online shopping wasn't one of them. The problem was, sending credit card numbers over HTTP opened them up to theft: anyone between you and the server could keep a copy of your ca">
+<meta name="keywords" content="tech">
+<meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+<meta charset="utf-8">
+<title>History of HTTPS Usage</title>
+<script nonce="this-is-not-a-real-nonce" type="text/javascript">(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.nonce='this-is-not-a-real-nonce';a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-27645543-1', 'auto');
+  ga('send', 'pageview');</script><script nonce="this-is-not-a-real-nonce" type="text/javascript">window.addEventListener("load", () => {
+  var pifr = document.getElementById("preview-iframe");
+  document.querySelectorAll("a[href^='/p/']").forEach(a => {
+    a.addEventListener("mouseover", hoverInnerLink);
+  });
+
+
+  var waitingForLoad = false;
+  var nextPreview = null;
+  var currentPreview = null;
+  var nextPreviewY = null;
+  var currentPreviewY = null;
+
+  function hoverInnerLink(e) {
+    if (window.innerWidth < 1000) {
+      return;
+    }
+    if (currentPreview == e.target.href) {
+      return;
+    }
+    nextPreview = e.target.href;
+    nextPreviewPageY = e.pageY;
+    nextPreviewClientY = e.clientY;
+    if (waitingForLoad) {
+      return;
+    }
+    loadPreview();
+  }
+
+  function loadPreview() {
+    if (!nextPreview) {
+      return;
+    }
+
+    var iframeTarget = nextPreview;
+
+    var preview = document.getElementById("preview");
+    pifr.style.display = "block";
+    var open = document.getElementById("preview-open");
+    open.style.display = "block";
+    open.onclick = function() {
+      window.top.location = iframeTarget;
+    };
+
+    // amount of padding needed to put the preview at mouse location
+    var newPreviewY = nextPreviewPageY
+        - document.getElementById("top-posts").getBoundingClientRect().height
+        - 38;
+
+    var approxPreviewHeight = window.innerHeight/2 + 100;
+
+    if (nextPreviewClientY > window.innerHeight - approxPreviewHeight) {
+      newPreviewY -= (nextPreviewClientY - (
+          window.innerHeight - approxPreviewHeight));
+    }
+
+    if (newPreviewY < 0) {
+      newPreviewY = 0;
+    }
+
+    if (currentPreviewY && Math.abs(newPreviewY - currentPreviewY) < 30) {
+      newPreviewY = currentPreviewY;
+    }
+    preview.style.marginTop = newPreviewY + "px";
+
+    pifr.addEventListener("load", () => {
+      pifr.contentWindow.addEventListener("click", function() {
+        window.top.location = iframeTarget;
+      });
+      loadPreview();
+    });
+
+    // https://stackoverflow.com/questions/5259154/firefox-back-button-vs-iframes
+    pifr.contentWindow.location.replace(iframeTarget);
+
+    currentPreview = nextPreview;
+    nextPreview = null;
+    currentPreviewY = newPreviewY;
+    nextPreviewPageY = null;
+    nextPreviewClientY = null;
+  }
+});</script><style>.comment-thread {margin: 0 0 0 0.5em}
+.content {max-width:550px;}
+.comment {max-width: 448px;
+          min-width: 10em;
+          overflow: hidden;
+          overflow-wrap: break-word;
+          margin-top: 0px;
+          margin-bottom: -1px;
+          border-top:1px solid black;
+          border-bottom:1px solid black;
+          padding-top:10px;}
+.newcomment { border-left: 1px solid black;
+              padding-left: 5px; }
+.commentlink {font-style: italic;
+              font-size: 80%;
+              visibility: hidden;}
+.comment:hover .commentlink {visibility: visible}
+.highlighted {background-color: lightyellow;}
+#top-posts ul  {
+  padding-left: 0;
+  list-style: none;
+}
+#ad-wrapper {
+  max-width: 550px;
+}
+@media (min-width: 1000px) {
+  #right-column {
+    width: calc(100vw - 550px - 110px);
+    position: absolute;
+    top: 30px;
+    right: 30px;
+  }
+
+  #top-posts {
+    width: 350px;
+  }
+}
+@media (min-width: 1450px) {
+  #right-column {
+    width: calc((100vw - 550px)/2 - 100px);
+  }
+  .content, .webring {
+    width: 550px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #ad-wrapper {
+    max-width: 100vw;
+  }
+}
+
+#title-date-tags { width: 100% }
+#wrapper { margin: 8px}
+body {margin: 0}
+#title-date-tags h3 { margin: 0 }
+#newer-older {
+  display: flex;
+  margin-top: 1em;
+}
+#newer, #older, #newer-blank {
+  background-color: #EEE;
+  padding: 1em;
+  margin: 0.25em;
+  border-radius: 0.5em;
+  flex: 50%;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+#newer-blank {
+  background-color: #FFF;
+}
+.arr {
+}
+#newer > .arr {
+  margin-right: 1em;
+}
+#older > .arr {
+  margin-left: 1em;
+}
+#older {
+  justify-content: flex-end;
+}
+#div-gpt-ad-1524882696974-0 {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: center;
+}
+.webring {
+  max-width: 550px;
+  margin-top: 3em;
+}
+.webring .title {
+  margin: 0;
+}
+.webring .article {
+  margin: 1em 0.5rem;
+  padding: 0.5rem;
+  background: #eee;
+  border-radius: 0.5em;
+}
+.image-vertical-spacer {
+  display: none;
+}
+@media (max-width: 700px) {
+  .mobile-fullwidth {
+    position: absolute;
+    left: 0;
+  }
+  .image-vertical-spacer {
+    display: block;
+  }
+}
+@media (min-width: 550px) {
+  .webring .articles {
+    display: flex;
+  }
+  .webring .article {
+    margin: 0 0.5rem;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .webring .article:first-child {
+    margin-left: 0;
+  }
+  .webring .article:last-child {
+    margin-right: 0;
+  }
+}
+.webring .summary {
+  font-size: 0.8rem;
+  flex: 1 1 0;
+}
+.webring .attribution {
+  text-align: right;
+  margin-right: 0.5rem;
+}
+pre {
+  overflow-x: auto;
+}
+.headfoot ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.headfoot li {
+  display: inline;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+@media (max-width: 1000px) {
+  #preview {
+    display: none;
+  }
+}
+#preview button {
+  display: none;
+}
+#preview-iframe {
+  display: none;
+  margin: 0;
+  padding: 0;
+  width: min(550px, 100%);
+  height: 50vh;
+}</style>
+<meta property="og:title" content="History of HTTPS Usage">
+<meta property="og:type" content="article">
+<meta property="og:image" content="https://www.jefftk.com/chrome-https-adoption-graph-big.png">
+<meta property="og:url" content="https://www.jefftk.com/p/history-of-https-usage">
+<meta property="og:description" content="&quot;What should I use HTTPS for?&quot; is a question whose answer has changed over the years. Here's an attempt to piece the history together.   The web started off as just HTTP. This allowed for an enormous amount of things, but online shopping wasn't one of them. The problem was, sending credit card numbers over HTTP opened them up to theft: anyone between you and the server could keep a copy of your ca">
+</head>
+<body><div id="wrapper">
+<div class="headfoot">
+<ul>
+  <li><a href="https://www.jefftk.com/" rel="author">Jeff Kaufman</a></li>
+  <li><a href="https://www.jefftk.com/p/index">Posts</a></li>
+  <li><a href="https://www.jefftk.com/news.rss">RSS</a></li>
+  <li><a href="http://www.jefftk.com/news/back_from_1858.rss">&#9666;&#9666;RSS</a></li>
+  <li><a href="https://www.jefftk.com/contact">Contact</a></li>
+</ul>
+</div>
+<hr>
+<div class="content">
+<table id="title-date-tags">
+    <tr>
+<td valign="top" rowspan="2"><h3><a href="history-of-https-usage.html">History of HTTPS Usage</a></h3></td>
+        <td align="right" valign="top">March 8th, 2018</td>
+</tr>
+    <tr><td align="right" valign="top"><span><i><a href="https://www.jefftk.com/news/tech">tech</a></i></span></td></tr>
+</table>
+<div class="pt">
+
+    <span>
+
+"What should I use HTTPS for?" is a question whose answer has changed
+over the years.  Here's an attempt to piece the history together.
+
+</span><p>
+
+The web started off as just <a href="https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP</a>.
+This allowed for an enormous amount of things, but online shopping
+wasn't one of them.  The problem was, sending credit card numbers over
+HTTP opened them up to theft: anyone between you and the server could
+keep a copy of your card information.  Netscape saw this as an
+opportunity, if they could make a safe way to do this, using their
+browser and server.  This would be good for them and good for the
+success of the web as a whole.
+
+</p>
+<p>
+
+The decided to build <a href="https://en.wikipedia.org/wiki/Secure_Sockets_Layer">SSL</a>, a
+protocol for creating a secure channel between a client and server,
+which they could then run HTTP over.  They called the combination <a href="https://en.wikipedia.org/wiki/HTTPS">HTTPS</a>.
+
+</p>
+<p>
+
+It was initially viewed as just a thing for credit cards.  For example:
+
+</p>
+<p>
+
+</p>
+<blockquote>
+Netscape charges $1,495 for an entry-level server; adding the ability
+to handle secure credit card transmissions bumps the price up to
+$5,000
+<br>
+&#160;&#160;&#8212;<a href="http://fortune.com/2012/02/05/the-rise-of-netscape/">The rise of
+Netscape</a>, July 1995
+</blockquote>
+
+<p>
+
+Later that year, when there was a vulnerability found in the protocol,
+reports only discussed the impact on credit cards:
+
+</p>
+<p>
+
+</p>
+<blockquote>
+The problem in the Netscape Navigator was discovered by two first-year
+computer science graduate students at the University of California at
+Berkeley. They said a criminal could break into the software's coding
+system in less than a minute and gain access to credit card
+information.
+<br>
+&#160;&#160;&#8212;<a href="http://www.cnn.com/TECH/9509/netscape_flaw/index.html">Netscape:
+Internet security flaw can be fixed</a>, September 1995
+</blockquote>
+
+<p>
+
+And:
+
+</p>
+<p>
+
+</p>
+<blockquote>
+Several weeks ago Mr. Goldberg, along with another student, David
+Wagner, discovered a troubling flaw in the security of a Netscape
+Communications Corporation software program designed to let people
+safely make credit card purchases via the World Wide Web.
+<br>
+&#160;&#160;&#8212;<a href="http://query.nytimes.com/gst/fullpage.html?res=990CEFDC1131F935A25753C1A963958260&amp;pagewanted=all">The
+New Watchdogs of Digital Commerce</a>, October 1995
+</blockquote>
+
+<p>
+
+History from the late 1990s and early 2000s is hard to dig up, with so
+many dead sites and broken urls, but one place I looked to see things
+changing was old software manuals.  Unfortunately, vendors seem to
+have been very wary about giving specific advice about what sort of
+pages needed HTTPS.  Instead, we get things like mailing list
+administration software saying:
+
+</p>
+<p>
+
+</p>
+<blockquote>
+If security is a concern, consider securing access to the LISTSERV
+Maestro servers with encrypted communication, so that intruders cannot
+listen in on the communication between browser and server, and cannot
+gain knowledge about the data exchanged or spy out passwords.
+<br>
+&#160;&#160;&#8212;<a href="https://web.archive.org/web/20030802074124/http://www.lsoft.com:80/manuals/Maestro/1.0c/Maestro_Admin/section_12/page_01.htm">Securing
+Access With SSL</a>, May 2002
+</blockquote>
+
+<p>
+
+By 2004 HTTPS was being described as "<a href="https://news.netcraft.com/archives/2004/04/14/microsoft_ssl_vulnerability_gives_attackers_opportunity_to_gain_control_of_leading_banking_sites.html">secur[ing]
+web sites for online banking, stock trading and retailing</a>, and
+users were generally being taught that they should expect to see
+<code>https://</code> for their bank or when buying things, but not most
+other places.  For example, here's some advice from 2005 about forums
+that have logins but don't support HTTPS:
+
+</p>
+<blockquote>
+Most message boards and other sites that have membership options do
+not handle your login information through a secure layer, which means
+it is unencrypted, and anyone who manages to intercept data packets
+can read it.
+<p>
+Does this mean you should never use sites like this? No. What it does
+mean is, you should have a password for unsecure sites which is
+different from passwords you use for banking and credit card
+transactions, or anything else which requires security.
+<br>
+&#160;&#160;&#8212;<a href="http://www.virtu-software.com/ask-doug/QandA.asp?q=43">Should I
+provide passwords at unsecure sites?</a>, May 2005
+</p>
+</blockquote>
+
+<p>
+
+It seems like around this time it became common practice to use HTTPS
+for logins even if the rest of the site was HTTP-only.  For example,
+in 2006 the Wikipedia page for HTTPS was <a href="https://en.wikipedia.org/w/index.php?title=HTTPS&amp;diff=prev&amp;oldid=79370409">was
+edited</a> to add that in addition to "payment transactions" HTTPS
+was also commonly used for "corporate logons".
+
+</p>
+<p>
+
+Then we had a step backwards: sites realized they could put login
+forms on their home pages without serving the home page as HTTPS, by
+setting the form to POST to an HTTPS endpoint:
+
+</p>
+<blockquote>
+After years of training customers to trust only SSL-enabled sites,
+banks are shifting their online banking logins to the unencrypted home
+pages of their websites. Although the data is encrypted once the user
+hits the "Sign In" button, the practice runs counter to years of
+customer conditioning, as well as the goals of the browser
+makers. Three of the five largest U.S. banks now display login forms
+on non-SSL home pages, including Bank of America, Wachovia and Chase,
+as well as financial services giant American Express.
+<br>
+...
+<br>
+Mindful of this, many of the banks using homepage logins include a
+link to security information. "You may notice when you are on our home
+page that some familiar indicators do not appear in your browser to
+confirm the entire page is secure," Bank of America notes in its
+security note, accessed by clicking an icon on the login form. "Those
+indicators include the small 'lock' icon in the bottom right corner of
+the browser frame and the 's' in the Web address bar (for example,
+'https'). To provide the fastest access to our home page for all of
+          our millions of customers and other visitors, we have made signing in
+to Online Banking secure without making the entire page secure. Please
+be assured that your ID and passcode are secure and that only Bank of
+America has access to them."
+<br>
+&#160;&#160;&#8212;<a href="https://news.netcraft.com/archives/2005/08/23/banks_shifting_logins_to_nonssl_pages.html">Banks
+Shifting Logins to Non-SSL Pages</a>
+</blockquote>
+
+<p>
+
+As <a href="https://blogs.msdn.microsoft.com/ie/2005/04/20/tls-and-ssl-in-the-real-world/">Microsoft</a>
+pointed out at the time, this isn't secure against active attacks
+since the login page could be modified in transit.
+
+</p>
+<p>
+
+This was still common in 2009:
+
+</p>
+<blockquote>
+Some major websites--such as Facebook, Vox and others (but not
+Metafilter!)--have users enter username &amp; password on an http page
+rather than an https page. Is this as secure as logging in via
+<code>https://</code> and if so, why?
+<br>
+&#160;&#160;&#8212;<a href="https://ask.metafilter.com/139559/Are-login-boxes-on-http-pages-secure">Are
+login boxes on HTTP pages secure?</a>, December 2009
+</blockquote>
+
+<p>
+
+Around this time Gmail introduced an option to always use HTTPS for
+your account:
+
+</p>
+<blockquote> We use https to protect your password every time you log
+into Gmail, but we don't use https once you're in your mail unless you
+ask for it (by visiting https://mail.google.com rather than
+http://mail.google.com). Why not? Because the downside is that https
+can make your mail slower. Your computer has to do extra work to
+decrypt all that data, and encrypted data doesn't travel across the
+internet as efficiently as unencrypted data. That's why we leave the
+choice up to you.
+<br>...<br>
+We've added an option to Settings to always use https. If you don't
+regularly log in via unencrypted wireless connections at coffee shops
+or airports or college dorms, then you might not need this additional
+layer of security. But if you want to always use https, then this
+setting makes it super easy.
+<br>
+&#160;&#160;&#8212;<a href="https://gmail.googleblog.com/2008/07/making-security-easier.html">Making
+Security Easier</a>, July 2008
+</blockquote>
+
+<p>
+
+[Disclosure: I work for Google, though this post isn't a work project.]
+
+</p>
+<p>
+
+And they made HTTPS the default a year and a half later:
+
+</p>
+<blockquote>
+If you trust the security of your network and don't want default https
+turned on for performance reasons, you can turn it off at any time by
+choosing "Don't always use https" from the Settings menu. Gmail will
+still always encrypt the login page to protect your password. Google
+Apps users whose admins have not already defaulted their entire
+domains to https will have the same option.
+<br>
+&#160;&#160;&#8212;<a href="https://gmail.googleblog.com/2010/01/default-https-access-for-gmail.html">Default
+https access for Gmail</a>, January 2010
+</blockquote>
+
+<p>
+
+In 2010 they also added HTTPS support for search:
+
+</p>
+<blockquote>
+Years ago Google added SSL encryption to products ranging from Gmail
+to Google Docs and others, and we continue to enable encryption on
+more services. Like banking and e-commerce sites, Google's encryption
+extends beyond login passwords to the entire service. This
+session-wide encryption is a significant privacy advantage over
+systems that only encrypt login pages and credit card information.
+<br>...<br>
+when you search using SSL, you won't see links to offerings like Image
+Search and Maps that, for the most part, don't support SSL at this
+time. Also, since SSL connections require additional time to set up
+the encryption between your browser and the remote web server, your
+experience with search over SSL might be slightly slower than your
+regular Google search experience.
+<br>
+&#160;&#160;&#8212;<a href="https://googleblog.blogspot.com/2010/05/search-more-securely-with-encrypted.html">Search
+more securely with encrypted Google web search</a>, May 2010
+</blockquote>
+
+<p>
+
+Deployments where the site supported HTTPS but wouldn't serve it to
+you unless you explicitly chose to go there had been around since at
+least the 2004 launch of Gmail, but this was a big one and prompted
+the creation of the HTTPS Everywhere browser extension:
+
+</p>
+<blockquote>
+Today EFF and the Tor Project are launching a public beta of a new
+Firefox extension called HTTPS Everywhere. This Firefox extension was
+inspired by the launch of Google's
+encrypted search option. We wanted a way to ensure that every search
+our browsers sent was encrypted. At the same time, we were also able
+to encrypt most or all of the browser's communications with some other
+sites: [list of sites]
+<br>
+&#160;&#160;&#8212;<a href="https://www.eff.org/deeplinks/2010/06/encrypt-web-https-everywhere-firefox-extension">Encrypt
+the Web with the HTTPS Everywhere Firefox Extension</a>, June 2010
+</blockquote>
+
+<p>
+
+This extension kept a list of sites that provided HTTPS versions,
+along with regexps to go from an HTTP url to an HTTPS one.  This was
+not always as simple as adding an 's' to the protocol, since many
+sites used to do things like having <code>http://en.wikipedia.org</code>
+for HTTP but <code>https://secure.wikimedia.org/wikipedia/en</code> for
+HTTPS Their FAQ describes their thinking:
+
+</p>
+<blockquote>
+Q. What if the site doesn't support HTTPS, or only supports it for
+ some activities, like entering credit card information?
+<p>
+A. You could try to contact the site and point out that using HTTPS
+ for all site features is an increasingly common practice
+ nowadays and protects users (and sites) against a variety of
+ Internet attacks. For instance, it defends against the ability
+ of other people on a wifi network to spy on your use of the site
+ or even take over your account. You can also point out that
+ credit card numbers aren't the only information you consider
+ private or sensitive.
+ </p>
+<p>
+Sites like Google, Twitter, and Facebook now support HTTPS for
+non-financial information&#8212;for general privacy and security reasons.
+<br>
+&#160;&#160;&#8212;<a href="https://web.archive.org/web/20100711163407/https://www.eff.org/https-everywhere/faq">
+HTTPS Everywhere FAQ</a>, June 2010
+</p>
+</blockquote>
+
+<p>
+
+While some users installed the extension, most, as with all things you
+have to go out of your way to enable, did not.  For example, I don't
+think I did.
+
+</p>
+<p>
+<br>
+
+Over the course of the decade people had been shifting from mostly
+wired internet connections to mostly wireless ones.  It had become
+common for people to connect to WiFi in public places like coffee
+shops, and this changed the effective security level of HTTP.  Instead
+of an attacker needing to subvert your ISP or an intermediate network,
+they just needed to listen to what was being sent in the open over
+WiFi.  Using HTTPS only for login but then sending authentication
+cookies in the clear on each request had never been all that secure,
+but now it was easily exploitable.  Still, users and companies mostly
+didn't worry about it.
+
+</p>
+<p>
+
+Then in October 2010 <a href="http://codebutler.com/firesheep">Firesheep</a> came out.  This
+was an active exploit, packaged as an easy-to-use Firefox extension.
+Anyone could go down to the local coffee shop, open up Firesheep,
+sniff people's cookies, and impersonate people on Facebook, Twitter,
+etc.  The author of Firesheep wrote:
+
+</p>
+<blockquote>
+The only effective fix for [session hijacking] is full end-to-end encryption,
+known on the web as HTTPS or SSL. Facebook is constantly rolling out
+new "privacy" features in an endless attempt to quell the screams of
+unhappy users, but what's the point when someone can just take over an
+account entirely? Twitter forced all third party developers to use
+OAuth then immediately released (and promoted) a new version of their
+insecure website. When it comes to user privacy, SSL is the elephant
+in the room.
+<br>
+&#160;&#160;&#8212;<a href="http://codebutler.com/firesheep">Firesheep</a>, October 2010
+</blockquote>
+
+<p>
+
+Companies hurried to at least offer an HTTPS option, and Facebook
+announced an opt-in setting in January 2011, along with a goal of
+having HTTPS as the default at some point:
+
+</p>
+<blockquote>
+Starting today we'll provide you with the ability to experience
+Facebook entirely over HTTPS. You should consider enabling this option
+if you frequently use Facebook from public Internet access points
+found at coffee shops, airports, libraries or schools.
+<br>...<br>
+There are a few things you should keep in mind before deciding to
+enable HTTPS. Encrypted pages take longer to load, so you may notice
+that Facebook is slower using HTTPS. In addition, some Facebook
+features, including many third-party applications, are not currently
+supported in HTTPS. We'll be working hard to resolve these remaining
+issues. We are rolling this out slowly over the next few weeks, but
+you will be able to turn this feature on in your Account Settings
+soon. We hope to offer HTTPS as a default whenever you are using
+Facebook sometime in the future.
+<br>
+&#160;&#160;&#8212;<a href="https://www.facebook.com/notes/facebook/a-continued-commitment-to-security/486790652130/">A
+Continued Commitment to Security</a>, January 2011
+</blockquote>
+
+<p>
+
+Three months later, Twitter added support:
+
+</p>
+<blockquote>
+we are adding a user setting that lets you always use HTTPS when
+accessing Twitter.com.
+<br>...<br>
+This will improve the security of your
+account and better protect your information if you're using Twitter
+over an unsecured Internet connection, like a public WiFi network,
+where someone may be able to eavesdrop on your site activity. In the
+future, we hope to make HTTPS the default setting.
+<br>
+&#160;&#160;&#8212;<a href="https://blog.twitter.com/official/en_us/a/2011/making-twitter-more-secure-https.html">Making
+Twitter more secure: HTTPS</a>, March 2011
+</blockquote>
+
+<p>
+
+Google was already using HTTPS by default for Gmail, and offered an
+option to use search over HTTPS, but search was still unencrypted by
+default.  In October they rolled out HTTPS by default for logged in
+users:
+
+</p>
+<blockquote>
+As search becomes an increasingly customized experience, we recognize
+the growing importance of protecting the personalized search results
+we deliver. As a result, we're enhancing our default search experience
+for signed-in users. Over the next few weeks, many of you will find
+yourselves redirected to https://www.google.com (note the extra "s")
+when you're signed in to your Google Account. This change encrypts
+your search queries and Google's results page. This is especially
+important when you're using an unsecured Internet connection, such as
+a WiFi hotspot in an Internet cafe.
+<br>
+&#160;&#160;&#8212;<a href="https://googleblog.blogspot.com/2011/10/making-search-more-secure.html">Making
+search more secure</a>, October 2011
+</blockquote>
+
+<p>
+
+Other providers moved slower. For example, Yahoo Mail didn't even
+offer the option to always use HTTPS until <a href="https://www.emailquestions.com/threads/how-to-turn-on-ssl-and-secure-your-yahoo-mail-account.5977/">late
+2012</a>, when they apparently introduced it without an announcement.
+Small companies were generally even slower to add support, unless they
+were explicitly privacy or security focused.
+
+</p>
+<p>
+<br>
+
+In June 2013 <a href="https://en.wikipedia.org/wiki/Edward_Snowden">Edward Snowden</a>
+revealed how much spying the US had been doing, and how pretty much
+all HTTP traffic was being monitored.  It looks to me like these
+disclosures really changed how technical people were thinking about
+HTTPS.  Before the idea was that you should use HTTPS just for
+sensitive things (purchases, financial stuff, logged in sessions) but
+most things could stay in the clear (news sites, blogs, reference),
+while after the disclosures there was much more support for the idea
+that eventually everything should be over HTTPS.
+
+</p>
+<p>
+
+In the short term, companies that hadn't been using HTTPS consistently
+for sensitive things scrambled to roll it out:
+
+</p>
+<blockquote>
+We now use https by default for all Facebook users. This feature,
+which we first introduced as an option two years ago, means that your
+browser is told to communicate with Facebook using a secure
+connection, as indicated by the "https" rather than "http"
+<br>&#160;&#160;&#8212;<a href="https://www.facebook.com/notes/facebook-engineering/secure-browsing-by-default/10151590414803920/">Secure
+Browsing By Default</a>, July 2013</blockquote>
+
+<p>
+
+Wikipedia wrote:
+
+</p>
+<blockquote>
+Our current architecture cannot handle HTTPS by default, but we've
+been incrementally making changes to make it possible. Since we appear
+to be specifically targeted by XKeyscore, we'll be speeding up these
+efforts.
+<br>&#160;&#160;&#8212;<a href="https://blog.wikimedia.org/2013/08/01/future-https-wikimedia-projects/">The
+future of HTTPS on Wikimedia projects</a>, August 2013
+</blockquote>
+
+And then followed up with HTTPS by default for logged in users <a href="https://blog.wikimedia.org/2013/08/28/https-default-logged-in-users-wikimedia-sites/">later
+that month</a>.
+
+<p>
+
+Yahoo was again on the slower end, finally deploying it at the beginning of 2014:
+
+</p>
+<blockquote>
+As we promised back in <a href="https://yahoomail.tumblr.com/post/64066333170/our-commitment-to-your-security-launching-https">October</a>,
+we are now automatically encrypting
+all connections between our users and Yahoo Mail. Anytime you use
+Yahoo Mail - whether it's on the web, mobile web, mobile apps, or via
+IMAP, POP or SMTP- it is 100% encrypted by default and protected with
+2,048 bit certificates.
+<br>&#160;&#160;&#8212;<a href="https://yahoomail.tumblr.com/post/72588816144/https-now-default-in-yahoo-mail">HTTPS
+Now Default in Yahoo Mail</a>, January 2014
+</blockquote>
+
+By this point most of the barriers to HTTPS adoption had been
+resolved.  You no longer needed an IP for each host [1], and the extra
+computation was too low to matter, but certificates were still
+annoying.  For example, this was the main reason I didn't offer HTTPS
+on any of my (very much "long tail") sites.  Let's Encrypt was founded
+to fix this:
+
+<p>
+
+</p>
+<blockquote>
+Then why don't we use TLS (the successor to SSL) everywhere? Every
+browser in every device supports it. Every server in every data center
+supports it. Why don't we just flip the switch?
+<p>
+The challenge is server certificates. The anchor for any TLS-protected
+communication is a public-key certificate which demonstrates that the
+server you're actually talking to is the server you intended to talk
+to. For many server operators, getting even a basic server certificate
+is just too much of a hassle. The application process can be
+confusing. It usually costs money. It's tricky to install
+correctly. It's a pain to update.
+</p>
+<p>
+Let's Encrypt is a new free certificate authority, built on a
+foundation of cooperation and openness, that lets everyone be up and
+running with basic server certificates for their domains through a
+simple one-click process.
+<br>
+&#160;&#160;&#8212;<a href="https://letsencrypt.org/2014/11/18/announcing-lets-encrypt.html">Let's
+Encrypt: Delivering SSL/TLS Everywhere</a>, November 2014
+</p>
+</blockquote>
+
+<p>
+
+They <a href="https://letsencrypt.org/2014/11/18/announcing-lets-encrypt.html">announced</a> the project in November 2014, started <a href="https://letsencrypt.org/2015/11/12/public-beta-timing.html">public
+beta</a> a year later, and <a href="https://letsencrypt.org/2016/04/12/leaving-beta-new-sponsors.html">opened
+fully</a> in April 2016.  They're now covering <a href="https://letsencrypt.org/stats/">25M domains</a>, including this one.
+
+</p>
+<p>
+
+At this point browsers could start pushing pretty heavily towards
+HTTPS.  As they introduced new features, especially ones with any
+security impact, they made them only available to HTTPS pages.  (<a href="https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers">service
+workers</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia">getUserMedia</a>,
+<a href="https://www.chromium.org/Home/chromium-security/prefer-secure-origins-for-powerful-new-features">Prefer
+Secure Origins For Powerful New Features</a>)  In September 2016
+Chrome announced plans to eventually mark all HTTP sites as insecure:
+
+</p>
+<p>
+
+</p>
+<blockquote>
+Historically, Chrome has not explicitly labelled HTTP
+connections as non-secure. Beginning in January 2017 (Chrome 56),
+we'll mark HTTP pages that collect passwords or credit cards as
+non-secure, as part of a long-term plan to mark all HTTP sites as
+non-secure.
+<br>&#160;&#160;&#8212;<a href="https://security.googleblog.com/2016/09/moving-towards-more-secure-web.html">Moving
+towards a more secure web</a>, September 2016
+</blockquote>
+
+<p>
+
+And this is still on track:
+
+</p>
+<blockquote>
+For the past several years, we've moved toward a more secure web by
+strongly advocating that sites adopt HTTPS encryption. And within the
+last year, we've also helped users understand that HTTP sites are not
+secure by gradually marking a larger subset of HTTP pages as "not
+secure". Beginning in July 2018 with the release of Chrome 68, Chrome
+will mark all HTTP sites as "not secure".
+<br>
+&#160;&#160;&#8212;<a href="https://blog.chromium.org/2018/02/a-secure-web-is-here-to-stay.html">A
+secure web is here to stay</a>, February 2018
+</blockquote>
+
+<p>
+
+You can see the overall rise of HTTPS from Google's <a href="https://transparencyreport.google.com/https">HTTPS Transparency Report</a>:
+
+</p>
+<p>
+
+<a href="https://www.jefftk.com/chrome-https-adoption-graph-big.png"><img src="../chrome-https-adoption-graph.png" width="550" height="296" class="mobile-fullwidth" style="max-width:100.0vw; max-height:53.8vw;" srcset="../chrome-https-adoption-graph.png 550w,../chrome-https-adoption-graph-2x.png 1100w"><div style="height:min(53.8vw, 296px)" class="image-vertical-spacer"></div></a>
+
+</p>
+<p>
+
+You can also see it from Firefox data, via <a href="https://letsencrypt.org/stats/">Let's Encrypt stats</a>:
+
+</p>
+<p>
+
+<a href="https://www.jefftk.com/firefox-https-adoption-graph-big.png"><img src="../firefox-https-adoption-graph.png" width="550" height="305" class="mobile-fullwidth" style="max-width:100.0vw; max-height:55.5vw;" srcset="../firefox-https-adoption-graph.png 550w,../firefox-https-adoption-graph-2x.png 1100w"><div style="height:min(55.5vw, 305px)" class="image-vertical-spacer"></div></a>
+
+</p>
+<p>
+
+We're not yet to where there is only <code>https://</code>, but it looks
+like we'll be there within a few years.
+
+</p>
+<p>
+<br>
+
+[1] In 2003 <a href="https://tools.ietf.org/html/rfc3546#section-3.1">RFC 3456:
+Transport Layer Security (TLS) Extensions</a> came out, which defined
+Server Name Indication (SNI):
+
+</p>
+<blockquote>TLS does not provide a mechanism for a client to tell a
+server the name of the server it is contacting.  It may be desirable
+for clients to provide this information to facilitate secure
+connections to servers that host multiple 'virtual' servers at a
+single underlying network address.
+<br>
+&#160;&#160;&#8212;<a href="https://tools.ietf.org/html/rfc3546#section-3.1">RFC 3456</a>,
+June 2003.
+</blockquote>
+
+<p>
+
+For example, I host <a href="https://www.jefftk.com">jefftk.com</a>,
+<a href="https://trycontra.com">trycontra.com</a>, <a href="https://lilywise.com">lilywise.com</a>, and several other sites
+all on the same server with a single IP address.  When a request comes
+in, it specifies which of these it wants with the <code>Host:</code>
+header:
+
+</p>
+<blockquote>
+GET /index HTTP/1.1
+Host: www.jefftk.com
+...
+</blockquote>
+
+Before SNI, if I had been trying to host all of these on HTTPS at one
+IP, the conversation would have started with a request for a
+certificate.  But how would I know which certificate to provide?  If
+they're trying to visit jefftk.com they want Cert A, while for
+trycontra.com they want Cert B, etc.  At the time you could work
+around this by using different IP addresses for the different sites,
+and then you know a request on IP A should get Cert A, while IP B
+should get Cert B.  This was expensive and awkward, however, and
+limited the deployment of HTTPS.
+
+<p>
+
+(There was another way to do it, <code>subjectAltName</code> to make a
+single certificate that was good for multiple domains.  This would
+have been fine for my sites, and actually is still how I handle certs,
+but it doesn't work well for hosting providers or anyone else with a
+lot of domains that change often.)
+
+</p>
+<p>
+
+With SNI, the browser includes the domain name of the site it's trying
+to visit when it first starts setting up an SSL connection.  This lets
+the server pick the right certificate to serve, without relying on the
+multiple IP addresses hack.
+
+</p>
+<p>
+
+On the other hand, as long as any browsers you want to support don't
+handle SNI yet you can't switch over to it.  This was a very long
+transition.  Since SNI was handled by the SSL library, support for SNI
+was usually dependent on the operating system version.  Windows XP and
+Android Gingerbread were the last two widely used OSes to not support
+SNI, and they stuck around for a long time.  For example, in July 2013
+Gingerbread and earlier were <a href="https://web.archive.org/web/20130705190501/https://developer.android.com/about/dashboards/index.html">still
+at 41%</a>, in July 2015 they <a href="https://web.archive.org/web/20150704202516/https://developer.android.com/about/dashboards/index.html">were
+at 6%</a>, and they didn't drop below 1% until <a href="https://web.archive.org/web/20170605011452/https://developer.android.com/about/dashboards/index.html">June
+2017</a>. (See <a href="https://www.bidouille.org/misc/androidcharts">pretty charts</a>.)
+if you specifically visited <code>https://gmail.com</code>.
+
+  </p>
+</div>
+
+  <div id="newer-older">
+<a id="newer" href="https://www.jefftk.com/p/thoughts-on-existential-risk">
+  <div class="arr">
+    &#8592;
+  </div>
+  Thoughts on Existential Risk
+</a><a id="older" href="https://www.jefftk.com/p/touring-as-a-contra-band">
+  Touring As a Contra Band
+  <div class="arr">
+    &#8594;
+  </div>
+</a>
+</div>
+<p>Comment via: <a href="https://plus.google.com/103013777355236494008/posts/Q7yyR5GXVEd">google plus</a>, <a href="https://www.facebook.com/jefftk/posts/931360783402">facebook</a></p>
+<div id="comments">
+<script nonce="this-is-not-a-real-nonce" type="text/javascript">var last_visit = document.cookie.replace(/(?:(?:^|.*;\s*)jtk_last_visit\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+var current_time = new Date().getTime();
+var one_year_gmt_str = new Date(current_time + 31536000000).toGMTString();
+document.cookie = "jtk_last_visit=" + current_time +
+                          "; path=" + window.location.pathname +
+                       "; expires=" + one_year_gmt_str;
+
+function ajaxJsonRequest(url, callback) {
+  function createRequestObject() {
+    var tmpXmlHttpObject;
+    if (window.XMLHttpRequest) {
+        // Mozilla, Safari would use this method ...
+        tmpXmlHttpObject = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+        // IE would use this method ...
+        tmpXmlHttpObject = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    return tmpXmlHttpObject;
+  }
+  var http = createRequestObject();
+
+  //make a connection to the server ... specifying that you intend to make a GET request
+  //to the server. Specifiy the page name and the URL parameters to send
+  http.open('get', url);
+  http.onreadystatechange = function() {
+    if(http.readyState == 4){
+      callback(JSON.parse(http.responseText));
+    }
+  }
+  http.send(null);
+}
+
+all_comments = {};
+quote_threshold = 8;
+quoting= {}
+dictionary = {}
+
+function canonical_wordlist(s) {
+  return (s.replace(/&[^ ;]+;/g, '')
+           .replace(/<[^> ]+>/g, '')
+           .toLowerCase()
+           .replace(/[^a-z0-9 ]/g, '')
+           .split(" "));
+}
+
+function build_phrase_dictionary_for_comment(comment, index) {
+  var words = canonical_wordlist(comment);
+  for (var i = 0 ; i + quote_threshold < words.length ; i++) {
+    var phrase = [];
+    for (var j = 0 ; j < quote_threshold ; j++) {
+      phrase.push(words[i+j]);
+    }
+    phrase = phrase.join(" ");
+    if (!dictionary[phrase]) {
+      dictionary[phrase] = [];
+    }
+    dictionary[phrase].push(index);
+  }
+}
+
+function build_phrase_dictionary(comments) {
+  dictionary = {}
+  for (var i = 0 ; i < comments.length; i++) {
+    build_phrase_dictionary_for_comment(comments[i][3], i);
+  }
+  for (var phrase in dictionary) {
+    if (dictionary[phrase].length < 2) {
+      delete dictionary[phrase];
+    }
+  }
+}
+
+function find_quotes(comments) {
+  build_phrase_dictionary(comments);
+
+  // hash from quoter index to hash from quotee index to first quoted phrase
+  var found_quotes = {};
+
+  for (var phrase in dictionary) {
+    var indexes = dictionary[phrase];
+    var first = indexes[0];
+    for (var i = 1 ; i < indexes.length ; i++) {
+      var index = indexes[i];
+      if (index != first) {
+        if (!found_quotes[index]) {
+          found_quotes[index] = {};
+        }
+        if (!found_quotes[index][first]) {
+          found_quotes[index][first] = phrase;
+        }
+      }
+    }
+  }
+  quoting = {};
+  not_quoting = {}
+  for (var i = 0 ; i < comments.length ; i++) {
+    if (found_quotes[i]) {
+      var quoted_comments_count = 0;
+      var earlier_index = -1;
+
+      // only give comments that quote exactly one earlier comment
+      for (var x in found_quotes[i]) {
+        quoted_comments_count += 1;
+        earlier_index = x;
+      }
+      if (quoted_comments_count == 1) {
+        quoting[i] = earlier_index;
+      } else {
+        if (!not_quoting[i]) {
+          not_quoting[i] = [];
+        }
+        not_quoting[i].push([earlier_index, quoted_comments_count, found_quotes[i]]);
+      }
+    }
+  }
+}
+
+function add_space_for_children(comments) {
+  var new_comments = [];
+  for (var i = 0 ; i < comments.length ; i++) {
+    new_comments[i] = [];
+    for (var j = 0 ; j < comments[i].length; j++) {
+      new_comments[i].push(comments[i][j]);
+    }
+    if (new_comments[i].length == 5) {
+      // server didn't leave a space for children; add one
+      new_comments[i].push([]);
+    }
+  }
+  return new_comments;
+}
+
+function nest(comments) {
+  find_quotes(comments);
+  // iterate backwards to make deletions safe
+  for (var i = comments.length - 1 ; i >= 0 ; i--) {
+    if (quoting[i]) {
+      var earlier_index = quoting[i];
+      comments[earlier_index][5].splice(0, 0, comments[i]);
+      comments.splice(i,1);
+    }
+  }
+
+  return comments;
+}
+
+function display_posts(comments) {
+  return display_posts_helper(nest(comments));
+}
+
+function google_plus_color(i) {
+  if (i % 6 == 0) {
+    return '#004bf5';
+  } else if (i % 6 == 1) {
+    return '#e61b31';
+  } else if (i % 6 == 2) {
+    return '#feb90d';
+  } else if (i % 6 == 3) {
+    return '#004bf5';
+  } else if (i % 6 == 4) {
+    return '#e61b31';
+  } else {
+    return '#00930e';
+  }
+}
+
+function service_abbr(service) {
+  if (service == "google plus") {
+    return 'g+';
+  } else if (service == "lesswrong") {
+    return 'lw';
+  } else if (service == "the EA Forum") {
+    return 'ea';
+  } else if (service == "hacker news") {
+    return 'hn';
+  } else if (service == "facebook") {
+    return 'fb';
+  } else {
+    return service;
+  }
+}
+
+function friendly_ts(ts) {
+  var now = Date.now() / 1000;
+  var delta = now - ts;
+  if (delta <= 60) {
+    return Math.round(delta) + "s";
+  }
+  delta /= 60;
+  if (delta <= 60) {
+    return Math.round(delta) + "m";
+  }
+  delta /= 60;
+  if (delta <= 24) {
+    return Math.round(delta) + "h";
+  }
+  delta /= 24;
+  if (delta <= 365) {
+    if (delta < 45) {
+      return Math.round(delta) + "d";
+    } else {
+      return Math.round(delta/30) + "m";
+    }
+  }
+  delta /= 365;
+  if (delta <= 100) {
+    return Math.round(delta) + "y";
+  }
+  delta /= 100;
+  return Math.round(delta) + "c";
+}
+
+function display_posts_helper(comments) {
+  var h = ""
+  for (var i = 0; i < comments.length; i++) {
+    // h += "<hr>";
+    // name, user_link, anchor, message, children
+    var name = comments[i][0];
+    var user_link = comments[i][1];
+    var anchor = comments[i][2];
+    var message = comments[i][3];
+    var ts = comments[i][4];
+    var children = comments[i][5];
+    var service = comments[i][6];
+
+    if (message.includes('https://') && !message.includes('<')) {
+      message = message.replace(
+        /https:\/\/([^ ,!;:]*[^.,!;:])/g,
+        '<a href="https://$1">$1</a>');
+    }
+
+    h += "<div class=comment id='" + anchor + "' ts=" + ts + ">";
+    h += "<a href='https://www.jefftk.com/p/&quot;&#32;+&#32;user_link&#32;+&#32;&quot;'>" + name + "</a> (";
+    h += friendly_ts(ts) + ", via " +  service_abbr(service) + "):";
+    h += "<a href='history-of-https-usage.html#" + anchor + "' class=commentlink>link</a>";
+    h += "<div";
+    if (last_visit.length > 0 && ts > last_visit/1000) {
+      h += " class=newcomment";
+    }
+    h += ">";
+    h += "<p>" + message + "</p>";
+    h += "</div></div>";
+
+    if (children.length > 0) {
+      h += "<div class=\"comment-thread\">";
+      h += display_posts_helper(children);
+      h += "</div>";
+    }
+  }
+  return h;
+}
+
+function gotComments(serviceName, response) {
+  all_comments[serviceName] = add_space_for_children(response);
+  redrawComments();
+  if (window.location.hash && window.location.hash.length > 0) {
+    var s = window.location.hash;
+    window.location.hash = "";
+    window.location.hash = s;
+
+    var highlighted_comment = document.getElementById(s.replace('#', ''));
+    if (highlighted_comment) {
+      highlighted_comment.className += " highlighted";
+    }
+  }
+}
+
+function deep_copy(x) {
+  return JSON.parse(JSON.stringify(x));
+}
+
+function recursively_add_service(c, service) {
+  c.push(service);
+  var children = c[5];
+  for (var i = 0 ; i < children.length ; i++) {
+    recursively_add_service(children[i], service);
+  }
+}
+
+function all_comments_sorted() {
+  var ts_comment = [];
+  for (var service in all_comments) {
+    for (var i = 0 ; i < all_comments[service].length ; i++) {
+      var comment_copy = deep_copy(all_comments[service][i]);
+      recursively_add_service(comment_copy, service);
+      var ts = comment_copy[4];
+      ts_comment.push([ts, comment_copy]);
+    }
+  }
+  ts_comment = ts_comment.sort();
+  var c = [];
+  for (var i = 0 ; i < ts_comment.length ; i++) {
+    c.push(ts_comment[i][1]);
+  }
+  return c;
+}
+
+function redrawComments() {
+  var d = document.getElementById("comments");
+  var h = "<div class=\"comment-thread\">";
+  h += display_posts(all_comments_sorted());
+  window.acs = all_comments_sorted();
+  window.dictionary = dictionary;
+  window.quoting = quoting;
+  h += "</div>";
+  d.innerHTML=h;
+}
+
+function pullComments(wsgiUrl, serviceName) {
+  ajaxJsonRequest(wsgiUrl.replace("json-comments", "json-comments-cached"), function(response) {
+    gotComments(serviceName, response);
+    ajaxJsonRequest(wsgiUrl, function(response) {
+      gotComments(serviceName, response);
+    });
+  });
+}</script>
+<script nonce="this-is-not-a-real-nonce" type="text/javascript">
+pullComments('/wsgi/json-comments/gp/Q7yyR5GXVEd', 'google plus');
+
+pullComments('/wsgi/json-comments/fb/931360783402', 'facebook');
+
+</script>
+</div>
+</div>
+<section class="webring">
+  <h3>Recent posts on blogs I like:</h3>
+  <section class="articles">
+    
+    <div class="article">
+      <h4 class="title">
+        <a href="https://danluu.com/codenames/">How good can you be at Codenames without knowing any words?</a>
+      </h4>
+      <p class="summary">
+
+About eight years ago, I was playing a game of Codenames where the game state was such that our team would almost certainly lose if we didn't correctly guess all of our remaining words on our turn. From the given clue, we were unable to do this. Altho&#8230;</p>
+      <small class="source">
+        via <a href="https://danluu.com">Posts on </a>
+      </small>
+      <small class="date">August 11, 2024</small>
+    </div>
+    
+    <div class="article">
+      <h4 class="title">
+        <a href="https://thingofthings.substack.com/p/bad-therapy-review-index">Bad Therapy Review Index</a>
+      </h4>
+      <p class="summary">Abigail Shrier's bad book</p>
+      <small class="source">
+        via <a href="https://thingofthings.substack.com">Thing of Things</a>
+      </small>
+      <small class="date">August 7, 2024</small>
+    </div>
+    
+    <div class="article">
+      <h4 class="title">
+        <a href="https://juliawise.net/relaxing-my-standards-on-housekeeping/">Relaxing my standards on housekeeping</a>
+      </h4>
+      <p class="summary">Getting to "good enough"
+The post Relaxing my standards on housekeeping appeared first on Otherwise.
+</p>
+      <small class="source">
+        via <a href="https://juliawise.net/">Otherwise</a>
+      </small>
+      <small class="date">July 31, 2024</small>
+    </div>
+    
+  </section>
+  <p class="attribution">
+    <a href="https://www.jefftk.com/ring">more</a>
+    &#160;&#160;&#160;
+    (<a href="https://git.sr.ht/~sircmpwn/openring">via openring</a>)
+  </p>
+</section><p></p>
+<div id="right-column">
+<div id="top-posts">
+<p><b>More Posts</b></p>
+<ul>
+<li><p><a href="https://www.jefftk.com/p/the-privilege-of-earning-to-give">The Privilege of Earning To Give</a></p></li>
+<li><p><a href="https://www.jefftk.com/p/equal-parenting-advice-for-dads">Equal Parenting Advice for Dads</a></p></li>
+<li><p><a href="https://www.jefftk.com/p/playing-dances-with-a-kid">Playing Dances With a Kid</a></p></li>
+<li><p><a href="https://www.jefftk.com/p/authorities-and-amateurs">Authorities and Amateurs</a></p></li>
+<li><p><a href="https://www.jefftk.com/p/candy-for-nets">Candy for Nets</a></p></li>
+</ul>
+</div>
+<div id="preview">
+<iframe id="preview-iframe" scrolling="no" sandbox="allow-same-origin"></iframe><button id="preview-open">open</button>
+</div>
+</div>
+<hr>
+<div class="headfoot">
+<ul>
+  <li><a href="https://www.jefftk.com/" rel="author">Jeff Kaufman</a></li>
+  <li><a href="https://www.jefftk.com/p/index">Posts</a></li>
+  <li><a href="https://www.jefftk.com/news.rss">RSS</a></li>
+  <li><a href="http://www.jefftk.com/news/back_from_1858.rss">&#9666;&#9666;RSS</a></li>
+  <li><a href="https://www.jefftk.com/contact">Contact</a></li>
+</ul>
+</div>
+</div></body>
+</html>
