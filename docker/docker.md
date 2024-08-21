@@ -33,7 +33,7 @@ For new installers, docker compose is now included by running `docker compose` (
 
 Find the release you want, `wget`, `chmod +x`, rename to `docker-compose`, and copy to `/usr/bin`. For example,
 
-```
+```bash
 wget https://github.com/docker/compose/releases/download/v2.9.0/docker-compose-linux-x86_64
 chmod +x docker-compose-linux-x86_64
 mv docker-compose-linux-x86_64 docker-compose
