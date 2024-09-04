@@ -65,7 +65,8 @@ Full read/write access to specified buckets. Users will only be able to list buc
             "Effect": "Allow",
             "Action": [
                 "s3:ListBucket",
-                "s3:ListBucketMultipartUploads"
+                "s3:ListBucketMultipartUploads",
+                "s3:GetBucketLocation"
             ],
             "Resource": [
                 "arn:aws:s3:::BUCKET-NAME-HERE"
