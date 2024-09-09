@@ -59,6 +59,22 @@ setfacl -R -m group:GROUPNAME:rw /path/to/directory
 
 Now, in combination with setting `SGID` on the parent directory (`chmod g+s`), any new files created in this directory will have `exampleuser:examplegroup` ownership with `664` permissions.
 
+#### Show ACL
+
+Show the current ACL settings with
+
+```bash
+getfacl /path/to/directory
+```
+
+#### Reset ACL to Defaul
+
+If you'd like to undo your ACL and go back to basic linux permissions, you can remove your policy with
+
+```bash
+setfacl -Rbk /path/to/directory
+```
+
 ## Further Research
 
 There is still more I want to understand here. It feels like the default ACL is also influenced by the permissions of the parent folder. I'm still uncertain exactly how to wrangle all the perms the way I want to, but I got to where I needed to for the time being.

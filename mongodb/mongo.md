@@ -152,6 +152,14 @@ The following backs up a specific database. Note that we must pass the `--authen
 mongodump --host=mongodb.example.com --port=27017 --db=db_name --username=user --password=pass --authenticationDatabase=admin
 ```
 
+If instead, you want to backup an entire server, you can use
+
+```bash
+mongodump --host=mongodb.example.com --port=27017 --username=user --password=pass --authenticationDatabase=admin --gzip --archive > "mongodump.archive.gz"
+```
+
+This writes to a single compress backup file which you may restore in its entirety, or specific databases and collections if needed.
+
 ## Restore
 
 By default, `mongorestore` looks for a directory called `./dump`. We can restore the data to the localhost instance with the following:
@@ -161,6 +169,20 @@ mongorestore --username=user --password=pass -authenticationDatabase=admin ./dum
 ```
 
 > **NOTE:** if you need to restore to a different host, add the `--host` parameter.
+
+If you used the gzip'd archive backup from above, you should do the following:
+
+```bash
+mongorestore --username=user --password=pass --authenticationDatabase=admin --gzip --archive=mongodump.archive.gz
+```
+
+If you only want to restore a certain namespace (db/collection), use
+
+```bash
+mongorestore --username=user --password=pass --authenticationDatabase=admin --nsInclude="database.collection" --gzip --archive=mongodump.archive.gz
+```
+
+> **NOTE:** The `"="` is important in the list of arguments, at the very least for the `--archive` parameter. If you use a space, like `--archive mongodump.archive.gz`, it will not be recognized and the command will hang waiting for `stdin`.
 
 # GUI
 
