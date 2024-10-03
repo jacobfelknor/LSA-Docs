@@ -152,6 +152,12 @@ The following backs up a specific database. Note that we must pass the `--authen
 mongodump --host=mongodb.example.com --port=27017 --db=db_name --username=user --password=pass --authenticationDatabase=admin
 ```
 
+If instead, you want to backup a specific collection, you can use
+
+```bash
+mongodump --host=mongodb.example.com --port=27017 --db=db_name --collection=coll_name --username=user --password=pass --authenticationDatabase=admin
+```
+
 If instead, you want to backup an entire server, you can use
 
 ```bash
