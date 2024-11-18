@@ -1,0 +1,103 @@
+EdgeRouter 10x notes
+
+ETH0-9 corresponds to the labeled ports on the front
+MAC address on label is for eth0, then increments one by one 
+
+Reset by booting, then holding reset button for 10 seconds until eth9 blinks then goes solid
+
+Initial setup can be done via a static IP (eth0) or DHCP (eth1). 
+
+If you go with the DHCP option, you must already have a DHCP server configured on your network
+
+If you go with the static option, you must have a NIC available on your workstation with the static IP on the 192.168.1.x subnet (but not 192.168.1.1, because that is the static IP given to eth0 on the edge router)
+
+
+
+Reaching the router:
+
+during initial config after a reset, go the the address on your existing LAN that DHCP assigned to eth1 or 192.168.1.1 assigned to eth0 in your browser for the web console.
+
+after initial config, if you have configured the unit with a DHCP server, ports eth1-9 are available for your DHCP clients (if using DHCP). eth0 is your "internet" or WAN port, connecting you to upstream traffic.
+
+You CANNOT by default manage the router external to this network (e.g., if this router exists on another LAN you control, you cannot reach the web console from the other LAN at the IP within the LAN's subnet addressed to the edge router)
+
+
+
+Default Firewall Policies
+
+WAN to INTERNAL (WAN_IN): drop
+	???this policy prevents any traffic from WAN to devices internal to router network??? But how could it without first going through router?? since internal devices would get IP on edge router's subnet, and WAN subnet is different, it wouldn't have a route to an internal device would it?
+
+	~unless... device on WAN of edge router (a LAN you control) sends packets to an IP. Packets egress over default gateway and go to some router (the gateway for the LAN you control). This router sees an internal IP but doesn't have a route saved yet for it, send it everywhere and see who responds. Edge router gets one of these packets sent by LAN you control's router and knows where to route the packet to the internal device, sends traffic there, then return traffic makes it back to LAN you control's router. LAN you control's router now knows to send future packets destined for that IP to the edge router. ????? ~~
+
+WAN to ROUTER (WAN_LOCAL): drop
+	
+	this policy prevents clients on the WAN from initiating connections to the router
+	this makes perfect sense as a default because you typically do not want external clients to be able to reach your web console, even when it is protected with a sign in page
+	however, if these edge routers are scattered across your network and you want to manage your fleet, allowing access in this way is necessary and appropriate (you are only exposing it to a "trusted" internal network)
+
+
+
+CONFIG FILES I CAN MANAGE
+
+/run/dhcpd.leases
+
+/config/config.boot
+	this may be all I need. I can configure firewall, dhcp, authentication, ssh, nat, dns, interfaces (including which is switch, which one runs DHCP, etc)
+
+
+I should create a conifig for 
+	DHCP scenario:   custom pools, lease times, etc. explore DHCP reservations for a semi-static scenario where devices get same IPs 				  but don't care which port they plug into
+	Static scenario: each port? device? gets its own static IP. I beleive this means which port you plug into matters. Or maybe it
+	                 just means each device is in charge of configuring its own IP (i think its this one)
+
+
+MULTIPLE DHCP SERVERS VIA MULTIPLE LANS
+
+By default, the edge router assigns all of the eth interfaces to switch0.
+This means that all interfaces must all be a part of the same subnet and they must only have a single
+DHCP server.
+
+In order to have multiple DHCP servers across different ports, we must break up switch0.
+
+The first option is to assign a static IP to a single port that you have removed from switch0. For example, if
+switch0 has subnet 192.186.1.1/24, you may want to assign 192.168.2.1 to the separated interface. You could then
+add an external hardware switch to this port to expand the number of devices you can connect to this port/DHCP server
+
+Unfortunately, it doesn't appear possible to create a second virtual switch (like a switch1). We can have a single switch
+that shares an IP/DHCP server, but additional subnets can only exist on individual ports
+
+
+VLANS
+
+https://help.ui.com/hc/en-us/articles/115012700967-EdgeRouter-VLAN-Aware-Switch
+
+Instead of breaking up our switch, lets instead use VLANs, which also allow us to assign different subnets to 
+devices connected to different ports across our switch
+
+
+CONFIGURE CLI
+	https://help.ui.com/hc/en-us/articles/204960094-EdgeRouter-Configuration-and-Operational-Mode#1	                
+
+	there is a build in CLI for configuring things.... I hope I can do the things without needing to go through the CLI every time.
+
+
+NO REBOOT APPLY CONFIG
+
+configure
+# load
+# commit
+# save
+# exit
+
+
+
+TLDR what I can do
+
+* configure the edgerouter via Ansible and a config file
+* create initial users/permissions
+* 1 port always reserved for WAN
+* for all DHCP scenarios, set up reservations so same MAC gets same IP
+* DHCP across all LAN ports with all ports on a switch
+* DHCP across range of LAN ports on switch, separate DHCP range or static on a per port basis outside of switch (cannot do multiple switches)
+* Multiple DHCP servers across VLANs on specified ports on the switch
