@@ -101,3 +101,50 @@ TLDR what I can do
 * DHCP across all LAN ports with all ports on a switch
 * DHCP across range of LAN ports on switch, separate DHCP range or static on a per port basis outside of switch (cannot do multiple switches)
 * Multiple DHCP servers across VLANs on specified ports on the switch
+
+IDEA
+* port 0 is management port with the static 192.168.1.1/24 address
+* second NIC on workstation gets a static 192.168.1.2/24 address (needs to be on same subnet as management port)
+* each additional ports 1-9 get their own VLAN+DHCP server which offers a range of a single IP (out of 2 possible IPs)
+
+	* vlan per port where (in edgerouter speak) vif 1 corresponds with port 1, 2 corresponds with port 2, etc.
+	* see https://community.ui.com/questions/Per-Port-DHCP-Range/52786315-ff56-444c-94f8-7dce9d187bc7
+	* each VLAN must "consume" at least 4 IPs in order to have a usable range, because /30 is the smallest ranged netmask with a usable address. The /32 "network" only gets 1 IP, not enough to define its own network with a gateway, broadcast, and usable range
+		* 10.99.99.0: the port IP
+		* 10.99.99.1-2: the usable IPs
+		* 10.99.99.3: the broadcast address
+	* For all combinations, see https://www.calculator.net/ip-subnet-calculator.html?cclass=any&csubnet=30&cip=10.99.99.0&ctype=ipv4&x=Calculate 
+	* This means that for each port, we can guarantee the same IP but cannot do them in sequence, like 10.99.99.1-9
+
+	* propose doing the following for easily remembered IPs
+		* VLAN 1
+			* 10.99.99.8 port IP
+			* 10.99.99.9-*10* DHCP pool
+			* 10.99.99.11 broadcast
+		* VLAN 2
+			* 10.99.99.21 port IP
+			* 10.99.99.21-*22* DHCP pool
+			* 10.99.99.23 broadcast
+		* VLAN 3
+			* 10.99.99.28 port IP
+			* 10.99.99.29-*30* DHCP pool
+			* 10.99.99.23 broadcast
+		* VLAN 4
+			* 10.99.99.40 port IP
+			* 10.99.99.42-*42* DHCP pool
+			* 10.99.99.43 broadcast
+		* VLAN 5
+			* 10.99.99.48 port IP
+			* 10.99.99.49-*50* DHCP pool
+			* 10.99.99.51 broadcast
+		* VLAN 6
+			* 10.99.99.60 port IP
+			* 10.99.99.61-*62* DHCP pool
+			* 10.99.99.63 broadcast
+		etc.
+
+	* general rule of thumb:
+		* odd port number 'n': IP is n0
+		* even port number 'k': IP is k2
+	
+	* the lease time for this setup should be set to an extremely low value, so that they expire quickly and can be reused by another device shortly after you unplug the previous device
