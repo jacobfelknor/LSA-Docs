@@ -87,9 +87,10 @@ user@hostname:~$ mongosh
 switched to db admin
 > db.createUser(
     {
-      user: "username",
+      user: "admin",
       pwd: passwordPrompt(), // instead of cleartext password
       roles: [
+        { role: "root", db: "admin" },
         { role: "userAdminAnyDatabase", db: "admin" },
         { role: "dbAdminAnyDatabase", db: "admin" },
         { role: "readWriteAnyDatabase", db: "admin" },

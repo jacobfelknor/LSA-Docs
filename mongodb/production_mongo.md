@@ -29,7 +29,7 @@ sudo setsebool -P mongod_can_connect_ldap 1
 
 ## Active Directory
 
-It is possible to set up MongoDB to authenticate against a central Active Directory server. First, before enabling any authentication/authorization on the server, create a local admin account with permissions to administer any database and also read/write to any database. Keep this password safe! This will allow us to recover from any problems in the future with bad LDAP settings. Enter a `mongosh` shell on the machine where the server is installed.
+It is possible to set up MongoDB to authenticate against a central Active Directory server. First, before enabling any authentication/authorization on the server, create a local admin account. Keep this password safe! This will allow us to recover from any problems in the future with bad LDAP settings. Enter a `mongosh` shell on the machine where the server is installed.
 
 ```js
 use admin;
@@ -38,8 +38,7 @@ db.createUser(
       user: "admin",
       pwd: passwordPrompt(), // instead of cleartext password
       roles: [
-        { role: "userAdminAnyDatabase", db: "admin" },
-        { role: "readWriteAnyDatabase", db: "admin" }
+        { role: "root", db: "admin" },
       ]
     }
   );
@@ -67,7 +66,7 @@ setParameter:
   enableLocalhostAuthBypass: 0
 ```
 
-### Test Setup 
+### Test Setup
 
 We can test that our LDAP configuration is correct with the `mongoldap` utility. Beware that it requires typing a plaintext password as an argument which will appear in your bash history, so use a shared or test user that this is acceptable for.
 
@@ -158,7 +157,6 @@ However, this may be desireable because it centralizes and simplifies your certi
 
 > **WARNING:** If proxying through NGINX, all requests will appear to be coming from `localhost` according to Mongo. Ensure the localhost exception is disabled!
 
-
 All that being said, we can front MongoDB with NGINX with the following config, specified in `/etc/nginx/nginx.conf`.
 
 > **NOTE:** placing this config in a file under `/etc/nginx/sites-available` will NOT work, because those files get included under the `http` directive!
@@ -176,6 +174,7 @@ stream {
     }
 }
 ```
+
 ## Backup and Restore Role
 
 In the next section, we'll discuss how to backup and restore MongoDB instances. As a prerequisite, we'll need a user with minimal privileges necessary to preform backups. Create one with the following:
@@ -208,7 +207,7 @@ We can show currently logged in users and their authenticated roles with
 db.runCommand({connectionStatus : 1})
 ```
 
-We can also show the currently authenticated user at the shell prompt by overriding the default function, placed in `.mongorc.js`. From [stackoverflow answer](https://stackoverflow.com/a/21417240) 
+We can also show the currently authenticated user at the shell prompt by overriding the default function, placed in `.mongorc.js`. From [stackoverflow answer](https://stackoverflow.com/a/21417240)
 
 ```js
 prompt = function() {
@@ -219,7 +218,6 @@ prompt = function() {
     return ">"
 }   
 ```
-
 
 ## Backups
 

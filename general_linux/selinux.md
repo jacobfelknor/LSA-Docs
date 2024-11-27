@@ -1,6 +1,6 @@
 # SELinux
 
-These notes only focus on some inserting, listing, and removing applied SELinux modules from the current system. See [wikipedia for more detailed information] (https://en.wikipedia.org/wiki/Security-Enhanced_Linux)
+These notes only focus on some inserting, listing, and removing applied SELinux modules from the current system. See [wikipedia for more detailed information] (<https://en.wikipedia.org/wiki/Security-Enhanced_Linux>)
 
 ## Enabling, Disabling, and Defaults
 
@@ -76,6 +76,22 @@ If you need to remove a previously inserted module (say, to update and you don't
 # replace with your priority, if needed. List command given above shows priorities if you don't know yours
 semodule -X 300 -r <module name>
 ```
+
+## Delete Custom Label
+
+If you previously made a modification to a file label with something like
+
+```bash
+semanage fcontext -a -t httpd_sys_content_t /path/to/file
+```
+
+You can remove this modification with
+
+```bash
+semanage fcontext -d /path/to/file
+```
+
+Then, for it to take effect, run the relabel command shown below.
 
 ## Relabel
 
