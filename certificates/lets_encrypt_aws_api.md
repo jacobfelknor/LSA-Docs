@@ -7,8 +7,9 @@ Getting a certificate from Let's Encrypt using the AWS cli is very straightforwa
 Install dependencies. Assuming a RHEL system
 
 ```bash
-# enable EPEL for RHEL 8
+# enable EPEL for RHEL 8/9
 sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+sudo dnf install https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
 # install snap + certbot, if not already installed
 sudo dnf install snapd
 sudo systemctl enable --now snapd.socket
@@ -28,7 +29,11 @@ sudo snap install --classic certbot
 sudo ln -s /snap/bin/certbot /usr/bin/certbot
 
 # install route53 plugin
+# RHEL 8
 sudo dnf install python3-certbot-dns-route53
+# RHEL 9 
+sudo snap install certbot-dns-route53
+
 # we need the aws cli to set up our credentials
 sudo dnf install awscli
 ```
