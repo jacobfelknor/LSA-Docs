@@ -49,4 +49,6 @@ mc rb --force ALIAS/BUCKET
 
 # gather logs on a certain bucket
 mc admin trace -a -v --path bucket/prefix/* ALIAS
+# tee output to a file for later analysis
+mc admin trace -a -v --path bucket/prefix/* ALIAS | tee bucket_trace.log
 ```
